@@ -5,6 +5,7 @@ import { api } from "~/utils/api";
 
 export default function Home() {
   const hello = api.item.getAll.useQuery();
+  api.item.getInventory.useQuery();
 
   return (
     <>
