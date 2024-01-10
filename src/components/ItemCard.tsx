@@ -4,7 +4,7 @@ export default function ItemCard() {
     const itemName = "Apple"
     const itemPrice = "4.00"
     const itemImage = "https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-    const itemStock = 4
+    const itemStock = 6
     const itemRestockDate = "10/12/23"
 
     //Counter for number reserving button
@@ -18,44 +18,38 @@ export default function ItemCard() {
                 <figure className="px-10 pt-10">
                     <img src={itemImage} className="rounded-xl" />
                 </figure>
+                {/* Item Name */}
+                <h2 className="mt-6 items-center text-center">{itemName}</h2>
                 <div className="card-body ">
-                    <div className="join">
-                        {/* Item Name */}
-                        <h2 className="card-title">{itemName}</h2>
-                        {/* Price tag */}
-                        <div className="badge badge-secondary ml-6">${itemPrice}</div>
-                    </div>
+
+                    
+                    
                     {/* Item Description */}
                     <p>If a dog chews shoes whose shoes does he choose?</p>
 
+                    <div className="flex items-center justify-center">
+                    {/* Price tag */}
+                    <div className="flex-1">${itemPrice}</div>
                     {/* If there is stock, then display the number in stock, else show the restock date*/}
                     {itemStock != 0 ?
 
-                        <div>
+                        <div className="flex-1">
                             {/* Number in stock */}
                             Number in stock: {itemStock}
                         </div>
                         :
-                        <div>
+                        <div className="flex-1">
                             {/* Restock Date */}
                             Restock date: {itemRestockDate}
                         </div>
                     }
-                    {/* Reserve button */}
-                    <div className="join join-horizontal bg-blue-700">
-                        
-                        
-<button onClick={decreaseReserving}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
-</svg>
- </button>
-                            <p className="items-center">Reserving: {reserving} {itemName}</p>
-                            <button onClick={increaseReserving}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-</svg>
-</button>
                     </div>
+                    
+                    
+                    {/* Reserve button */}
+                    <button className="btn btn-info">Reserve</button>
                 </div>
+                
 
             </div>
         </>
