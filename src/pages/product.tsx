@@ -1,5 +1,6 @@
 import ItemCard from "~/components/ItemCard"
 import { useCallback, useState } from "react";
+import Navbar from "~/components/Navbar";
 
 export default function product() {
 
@@ -8,6 +9,7 @@ export default function product() {
     const itemLayout = "column-" + layout.toString()
     return (
         <>
+        <Navbar />
         <button onClick={nextLayout}>Change Layout {layout}</button>
         <div className={itemLayout}>
             {itemLayout}
