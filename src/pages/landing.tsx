@@ -11,7 +11,6 @@ export default function Landing() {
                     {/* Shopping button */}
                     <button className="bg-yellow-900 border-4 border-yellow-400 text-white rounded-lg p-6 font-bold text-3xl xl:text-5xl">Start Shopping!</button>
                 </div>
-
                 <div className="grid grid-cols-2 md:mt-8 xl:mt-16">
                     <div className="md:mr-4 xl:mr-24 md:p-6 rounded-lg border-4 border-yellow-400 bg-yellow-900 text-white">
                         {/* Trojan Trading Post About */}
@@ -43,7 +42,6 @@ export default function Landing() {
                         </div>
                     </div>
                 </div>
-
                 {/* More general infomration on Trojan Trading Post */}
                 <div className="md:mt-12 md:p-6 border-4 border-yellow-400 bg-yellow-900 text-white">
                     <div>
@@ -62,9 +60,7 @@ export default function Landing() {
                         <p className="md:pl-6 md:pb-2">TTP was created by 2021's Educational Business CO-OP class. We started with events at Mililani High School, and now with the generous support of the Mililani Town Center, we have expanded to a storefront location
                         </p>
                     </div>
-
                 </div>
-
             </div>
         </>
     )
