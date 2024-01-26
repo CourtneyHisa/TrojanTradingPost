@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Navbar from "~/components/Navbar";
+import Footer from "~/components/Footer";
 
 export default function landing() {
     return (
@@ -7,6 +8,7 @@ export default function landing() {
             <div className="h-screen bg-yel2">
                 <Navbar />
             </div>
+            <Footer />
         </>
     )
 }
