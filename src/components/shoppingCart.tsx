@@ -1,13 +1,15 @@
+import { useCallback, useState } from "react";
+
 export default function ShoppingCart() {
     const itemImage = "https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
     const itemName = "Banana"
     const itemPrice = "4.00"
+
+    const [itemCount, setItemCount] = useState(0);
+    const increaseItemCount = useCallback(() => setItemCount(state => state + 1), setItemCount)
+    const decreaseItemCount = useCallback(() => setItemCount(state => state - 1), setItemCount)
     return (
         <>
-        <div className="w-64 h-64 bg-red-100 relative">
-  <div className="absolute inset-0 bg-cover bg-center z-0"></div>
-  <div className="opacity-0 hover:opacity-100 duration-300 absolute inset-0 z-10 flex justify-center items-center text-6xl text-white font-semibold">Dwayne</div>
-</div>
             <div className="drawer drawer-end">
                 <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content">
@@ -27,31 +29,11 @@ export default function ShoppingCart() {
                             <div className="divider"></div>
                         </div>
                         {/* Shopping Cart Items */}
-                        <li>
-                            {/* Shopping Cart Item Layout
-                            Image Name Price */}
-                            <div className="bg-blue-100 hover:bg-red-300 "> 
-                                {/* Item Image */}
-                                <img src={itemImage} className="rounded-xl w-32" />
-                                <div className="join join-vertical text-2xl text-right">
-                                    <div>
-                                        {itemName}
-                                    </div>
-                                    {/* Item Price */}
-                                    <div>
-                                        ${itemPrice}
-                                    </div>
-                                    {/* Show Remove text on hover */}
-                                    <div className="opacity-0 hover:opacity-100 absolute inset-0 z-10 flex justify-center items-center text-6xl text-white font-semibold">
-                                        Remove
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
+                        
+                        <li className="">
                             {/* Shopping Cart Item Layout
                             Image Name Price Remove */}
-                            <div className="bg-blue-100 hover:bg-red-300">
+                            <div className="bg-blue-100 hover:bg-blue-200">
                                 {/* Item Image */}
                                 <img src={itemImage} className="rounded-xl" />
                                 <div className="join join-vertical">
@@ -63,27 +45,43 @@ export default function ShoppingCart() {
                                         ${itemPrice}
                                     </div>
                                 </div>
-                                {/* Remove Item  */}
-                                <button className="ml-16">
-                                    X
+                                {/* Change Item Count */}
+                                <div className="join join-horizontal">
+                                <button className="ml-4" onClick={decreaseItemCount}>
+                                    -
                                 </button>
-                            </div>
-                        </li>
-                        <li><div className="">
-                            <img src={itemImage} className="rounded-xl" />
-                            <div className="join join-vertical">
-                                <div>
-                                    {itemName}
-                                </div>
-                                <div>
-                                    ${itemPrice}
+                                <div className="px-4">{itemCount}</div>
+                                <button className="ml-16" onClick={increaseItemCount}>
+                                    +
+                                </button>
                                 </div>
                             </div>
-                            <button className="ml-16">
-                                X
-                            </button>
-                        </div>
                         </li>
+                            {/* Shopping Cart Item Layout
+                            Image Name Price Remove */}
+                            <div className="w-72 bg-blue-100 hover:bg-blue-200">
+                                {/* Item Image */}
+                                <img src={itemImage} className="rounded-xl" />
+                                <div className="join join-vertical">
+                                    <div>
+                                        {itemName}
+                                    </div>
+                                    {/* Item Price */}
+                                    <div>
+                                        ${itemPrice}
+                                    </div>
+                                </div>
+                                {/* Change Item Count */}
+                                <div className="join join-horizontal">
+                                <button className="ml-4" onClick={decreaseItemCount}>
+                                    -
+                                </button>
+                                <div className="px-4 w-10">{itemCount}</div>
+                                <button className="ml-16" onClick={increaseItemCount}>
+                                    +
+                                </button>
+                                </div>
+                            </div>
                     </ul>
                 </div>
             </div>
