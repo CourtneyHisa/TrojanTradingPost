@@ -22,7 +22,7 @@ export default function ShoppingCart() {
                 {/* Shopping Cart Sidebar */}
                 <div className="drawer-side">
                     <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
-                    <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+                    <ul className="menu p-4 w-96 min-h-full bg-base-200 text-base-content ">
                         {/* Shopping Cart Header */}
                         <div>
                             <div className="text-center text-3xl">Shopping Cart Items</div>
@@ -33,7 +33,7 @@ export default function ShoppingCart() {
                         <li className="">
                             {/* Shopping Cart Item Layout
                             Image Name Price Remove */}
-                            <div className="bg-blue-100 hover:bg-blue-200">
+                            <div className="bg-blue-100 hover:bg-blue-200 ">
                                 {/* Item Image */}
                                 <img src={itemImage} className="rounded-xl" />
                                 <div className="join join-vertical">
@@ -57,31 +57,7 @@ export default function ShoppingCart() {
                                 </div>
                             </div>
                         </li>
-                            {/* Shopping Cart Item Layout
-                            Image Name Price Remove */}
-                            <div className="w-72 bg-blue-100 hover:bg-blue-200">
-                                {/* Item Image */}
-                                <img src={itemImage} className="rounded-xl" />
-                                <div className="join join-vertical">
-                                    <div>
-                                        {itemName}
-                                    </div>
-                                    {/* Item Price */}
-                                    <div>
-                                        ${itemPrice}
-                                    </div>
-                                </div>
-                                {/* Change Item Count */}
-                                <div className="join join-horizontal">
-                                <button className="ml-4" onClick={decreaseItemCount}>
-                                    -
-                                </button>
-                                <div className="px-4 w-10">{itemCount}</div>
-                                <button className="ml-16" onClick={increaseItemCount}>
-                                    +
-                                </button>
-                                </div>
-                            </div>
+                            
                     </ul>
                 </div>
             </div>
