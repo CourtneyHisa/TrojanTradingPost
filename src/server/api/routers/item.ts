@@ -19,6 +19,16 @@ export const itemRouter = createTRPCRouter({
       });
       return data;
     }),
+  getItemById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async({ input }) => {
+      const { data }: { data: Item; } = await axios.get(API_BASE + "/items/" + input.id, {
+        headers: {
+          'Authorization': AUTH
+        }
+      });
+      return data;
+    }),
   getInventory: publicProcedure
     .query(async () => {
       const { data }: { data: Inventory; } = await axios.get(API_BASE + "/inventory", {
