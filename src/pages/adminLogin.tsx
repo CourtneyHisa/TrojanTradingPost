@@ -4,9 +4,9 @@ export default function adminLogin() {
             <main className="min-h-screen bg-blue-100 flex items-center justify-center text-gray-500 text-sm">
                 <form
                     className="bg-white shadow-lg rounded-md p-5 md:p-10 flex flex-col w-11/12 max-w-lg"
-                    novalidate
+                    noValidate={true}
                 >
-                    <label for="email" class="mb-5">
+                    <label htmlFor="email" className="mb-5">
                     <span>Email</span>
                     <input
                         type="email"
@@ -17,7 +17,7 @@ export default function adminLogin() {
                         required
                     />
                     </label>
-                    <label for="password" class="mb-5">
+                    <label htmlFor="password" className="mb-5">
                     <span>Password</span>
                     <input
                         type="password"
