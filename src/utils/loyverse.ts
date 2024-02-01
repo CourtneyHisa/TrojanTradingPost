@@ -103,3 +103,26 @@ export type Inventory = {
     }[];
     cursor: string;
 };
+
+export type Customer = {
+    id: string;
+    name: string;
+    email: string;
+    phone_number: string;
+    address: string;
+    city: string;
+    region: string;
+    postal_code: string;
+    country_code: string;
+    customer_code: string;
+    note: string;
+    first_visit?: string | null;
+    last_visit?: string | null;
+    total_visits?: number;
+    total_spent?: number;
+    total_points: number;
+    created_at?: string;
+    updated_at?: string;
+    deleted_at?: string;
+    permanent_deletion_at?: string;
+}
