@@ -12,8 +12,6 @@ export default function product() {
         <div className={itemLayout}>
             {itemLayout}
         <ItemCard />
-        <ItemCard />
-        <ItemCard />
         </div>
         
         </>
