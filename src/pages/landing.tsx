@@ -70,19 +70,3 @@ export default function Landing() {
         </>
     )
 }
-=======
-import Link from "next/link";
-import Navbar from "~/components/Navbar";
-import Footer from "~/components/Footer";
-
-export default function landing() {
-    return (
-        <>
-            <div className="h-screen bg-yel2">
-                <Navbar />
-            </div>
-            <Footer />
-        </>
-    )
-}
->>>>>>> 35f39a479d5dbce2e6f3f41082402b10916f75c2
