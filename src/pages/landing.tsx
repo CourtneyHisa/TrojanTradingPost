@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import PictureRotation from "~/components/pictureRotation"
 export default function Landing() {
     return (
