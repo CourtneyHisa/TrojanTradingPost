@@ -14,14 +14,23 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        String   @id @default(auto()) @map("_id") @db.ObjectId
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model Category {
+    id                String  @id @default(auto()) @map("_id") @db.ObjectId
+    loyverseId        String  @unique
+    name              String
+}
 
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String @db.ObjectId
+model Item {
+    id                String  @id @default(auto()) @map("_id") @db.ObjectId
+    name              String
+    loyverseId        String  @unique
+    imageUrl          String?
+}
+
+model Variant {
+    id                String  @id @default(auto()) @map("_id") @db.ObjectId
+    name              String
+    loyverseId        String  @unique
 }
 
 // Necessary for Next auth
@@ -59,7 +68,6 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    posts         Post[]
 }
 
 model VerificationToken {
