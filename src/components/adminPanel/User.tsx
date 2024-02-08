@@ -21,7 +21,7 @@ export default function Users() {
                             <td>${'user.password'}</td>
                             <td>
                                 <div className="dropdown">
-                                    <div tabIndex={0} role="button" className="btn m-1">Click</div>
+                                    <div tabIndex={0} role="button" className="btn btn-sm h-2">Click</div>
                                     <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                                         <li><a>Item 1</a></li>
                                         <li><a>Item 2</a></li>

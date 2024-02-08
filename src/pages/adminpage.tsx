@@ -51,8 +51,13 @@ export default function AdminPage() {
                 <div>
                     <h2>Admin Page</h2>
                 </div>
+                <div>
+                    <div id="main" ref={mainRef}>
+                        <Home />
+                    </div>
+                </div>
                 <div className="drawer">
-                    <input id="my-drawer" type="checkbox" className="drawer-toggle" ref={my_drawer}/>
+                    <input id="my-drawer" type="checkbox" className="drawer-toggle" ref={my_drawer} />
                     <div className="drawer-content">
                         {/* <!-- Page content here --> */}
                         <label htmlFor="my-drawer" className="btn btn-square">
@@ -67,11 +72,6 @@ export default function AdminPage() {
                             <li id='products' onClick={switchPage}><a>Products</a></li>
                             <li id='users' onClick={switchPage}><a>Users</a></li>
                         </ul>
-                    </div>
-                </div>
-                <div>
-                    <div id="main" ref={mainRef}>
-                        <Home />
                     </div>
                 </div>
             </div>
