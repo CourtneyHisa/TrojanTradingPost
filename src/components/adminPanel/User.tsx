@@ -10,6 +10,7 @@ export default function Users() {
                             <th>E-Mail</th>
                             <th>Password</th>
                             <th>Reserves</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -19,17 +20,16 @@ export default function Users() {
                             <td>${'user.email'}</td>
                             <td>${'user.password'}</td>
                             <td>
-                                <ul className="menu lg:menu-horizontal bg-base-200 rounded-box lg:mb-64">
-                                    <li>
-                                        <details>
-                                            <summary>View Reserves</summary>
-                                            <ul>
-                                                <li><a>Reserve 1</a></li>
-                                                <li><a>Reserve 2</a></li>
-                                            </ul>
-                                        </details>
-                                    </li>
-                                </ul>
+                                <div className="dropdown">
+                                    <div tabIndex={0} role="button" className="btn m-1">Click</div>
+                                    <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                        <li><a>Item 1</a></li>
+                                        <li><a>Item 2</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td>
+                                <button className="btn btn-sm h-2">Delete</button>
                             </td>
                         </tr>
                     </tbody>
