@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import Products from "~/components/adminPanel/Products";
 import Home from "~/components/adminPanel/Home";
 import Users from "~/components/adminPanel/User";
+import Catagories from '~/components/adminPanel/Catagories';
 
 export default function AdminPage() {
     const mainRef = useRef<HTMLDivElement>(null);
@@ -30,7 +31,8 @@ export default function AdminPage() {
                 selectedMenuItem === 'home' ? <Home /> :
                     selectedMenuItem === 'products' ? <Products /> :
                         selectedMenuItem === 'users' ? <Users /> :
-                            null
+                            selectedMenuItem === 'catagories' ? <Catagories /> :
+                                null
             );
         } else {
             main?.innerHTML == ''; // Clear the main div if no menu item is selected
@@ -71,6 +73,7 @@ export default function AdminPage() {
                             <li id='home' onClick={switchPage}><a>Home</a></li>
                             <li id='products' onClick={switchPage}><a>Products</a></li>
                             <li id='users' onClick={switchPage}><a>Users</a></li>
+                            <li id='catagories' onClick={switchPage}><a>Catagories</a></li>
                         </ul>
                     </div>
                 </div>
