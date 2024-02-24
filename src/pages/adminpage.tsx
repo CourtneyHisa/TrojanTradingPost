@@ -7,7 +7,7 @@ import Catagories from '~/components/adminPanel/Catagories';
 
 export default function AdminPage() {
     const mainRef = useRef<HTMLDivElement>(null);
-    const my_drawer = useRef<HTMLInputElement>(null)
+    const my_drawer = useRef<HTMLInputElement>(null);
     const [selectedMenuItem, setSelectedMenuItem] = useState<string | null>(null);
 
     function switchPage(event: React.MouseEvent<HTMLLIElement, MouseEvent>) {
