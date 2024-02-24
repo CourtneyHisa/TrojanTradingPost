@@ -1,9 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import Products from "~/components/adminPanel/Products";
-import Home from "~/components/adminPanel/Home";
-import Users from "~/components/adminPanel/User";
-import Catagories from '~/components/adminPanel/Catagories';
+
+import { Home, Products, Users, Categories } from '~/components/AdminPages'
 
 export default function AdminPage() {
     const mainRef = useRef<HTMLDivElement>(null);
@@ -31,7 +29,7 @@ export default function AdminPage() {
                 selectedMenuItem === 'home' ? <Home /> :
                     selectedMenuItem === 'products' ? <Products /> :
                         selectedMenuItem === 'users' ? <Users /> :
-                            selectedMenuItem === 'catagories' ? <Catagories /> :
+                            selectedMenuItem === 'catagories' ? <Categories /> :
                                 null
             );
         } else {

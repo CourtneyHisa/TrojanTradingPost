@@ -1,15 +1,20 @@
 import PictureRotation from "~/components/pictureRotation"
+import Navbar from "~/components/Navbar"
+import Footer from "~/components/Footer"
+import Link from "next/link"
 export default function Landing() {
     return (
         <>
-            <div className="text-2xl md:px-16 xl:px-24 xl:text-3xl bg-gray-100">
+        <Navbar />
+            <div className="text-2xl md:px-16 xl:px-24 xl:text-3xl bg-gray-100 font-mhs">
                 <div className="text-center">
-                    {/* Heading */}
-                    <h1 className="text-yellow-900 p-4 font-bold text-5xl xl:text-8xl">Welcome to the Trojan Trading Post!</h1>
                     {/* Picture Carosel */}
                     <PictureRotation></PictureRotation>
+                    {/* Heading */}
+                    <h1 className="mb-6 text-yellow-900 p-4 font-bold text-5xl xl:text-8xl">Welcome to the Trojan Trading Post!</h1>
+                    
                     {/* Shopping button */}
-                    <button className="bg-yellow-900 border-4 border-yellow-400 text-white rounded-lg p-6 font-bold text-3xl xl:text-5xl">Start Shopping!</button>
+                    <Link href="/product" className="bg-yellow-900 border-4 border-yellow-400 text-white rounded-lg p-6 font-bold text-3xl xl:text-5xl">Start Shopping!</Link>
                 </div>
                 <div className="grid grid-cols-2 md:mt-8 xl:mt-16">
                     <div className="md:mr-4 xl:mr-24 md:p-6 rounded-lg border-4 border-yellow-400 bg-yellow-900 text-white">
@@ -43,11 +48,11 @@ export default function Landing() {
                     </div>
                 </div>
                 {/* More general infomration on Trojan Trading Post */}
-                <div className="md:mt-12 md:p-6 border-4 border-yellow-400 bg-yellow-900 text-white">
+                <div className="md:my-12 md:p-6 border-4 border-yellow-400 bg-yellow-900 text-white">
                     <div>
                         <h3 className="font-bold  text-2xl xl:text-4xl pb-4">Purpose</h3>
-                        <p className="md:pl-6 md:pb-2">Friday: 3PM-8PM
-                            Saturday: 10AM-8PM
+                        <p className="md:pl-6 md:pb-2">
+                        TTP is raising money for Mililani High School’s CTE scholarships, athletics programs, and ASMHS (Associated Students of Mililani High school).
                         </p>
                     </div>
                     <div>
@@ -62,6 +67,7 @@ export default function Landing() {
                     </div>
                 </div>
             </div>
+            <Footer />
         </>
     )
 }
