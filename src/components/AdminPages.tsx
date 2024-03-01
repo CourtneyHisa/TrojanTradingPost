@@ -166,13 +166,13 @@ export function Categories() {
             if (inputRef.current.style.display == 'none') {
                 inputRef.current.style.display = ''
             } else {
-                console.error("input hiding error editCategory")
+                return console.error("input hiding error editCategory")
             }
             if (editButtonRef.current) {
                 if (inputRef.current.style.display == '') {
-                    editButtonRef.current.style.display = 'none'
+                    return editButtonRef.current.style.display = 'none'
                 } else {
-                    console.error("button hiding error editCategory")
+                    return console.error("button hiding error editCategory")
                 }
             }
         }
@@ -181,21 +181,29 @@ export function Categories() {
         //     return
         // }
     }
-
+    // confirm edit a category description
     const confirmEditCategory = (index: number) => {
-
         if (editInputValue != '') {
             console.log(editInputValue);
             if (categoriesArray) {
-                const newArray = categoriesArray
+                const newArray = [] as string[]
+                newArray.concat(categoriesArray)
+                console.log(newArray)
                 if (newArray) {
-                    const newString = newArray[index].split(" - ")
-                    newString[1] == editInputValue
-                    newArray[index] == newString?.join(" - ")
+                    const newString: string[] | undefined = (newArray[index]) ? newArray[index]!.split(" - ") : undefined
+                    newString !== undefined ? setEditInputValue(newString[1]!): void
+                    newArray[index] == newString!.join(" - ")
                     console.log(newArray)
                     setCategoriesArray(newArray)
+                    console.log(categoriesArray)
+                } else {
+                    return console.error("compiling the new array error, confirmEditCategory")
                 }
+            } else {
+                return console.error("error reading, confirmEditCategory")
             }
+        } else {
+            return console.error("confirmEditCategory error")
         }
 
         if (inputRef.current) {
