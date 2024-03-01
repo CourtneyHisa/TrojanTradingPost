@@ -10,7 +10,7 @@ export default function picutureRotation() {
 
   return (
     <>
-      <div className="relative">
+      <div className="relative w-screen">
         <div className="carousel w-full">
           <div className="carousel-item relative w-full">
             {/* Image currently shown determined by index */}

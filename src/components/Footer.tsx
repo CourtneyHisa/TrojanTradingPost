@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Footer() {
     return(
         <div>
-            <footer className="footer p-10 bg-neutral text-neutral-content object-bottom">
+            <footer className="footer p-10 bg-gray-200 object-bottom">
                 <aside className="ml-32">
                     <Link href="https://www.mililanihs.org/" target="_blank">
                         <img
