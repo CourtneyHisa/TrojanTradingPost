@@ -133,95 +133,69 @@ export function Users() {
     )
 }
 
+interface Category {
+    description: string;
+    ref: React.MutableRefObject<HTMLInputElement | null>;
+}
+
 export function Categories() {
-    const [categoriesArray, setCategoriesArray] = useState(["Red - It's red", "Green - It's green", "Blue - It's Blue"]);
+    const [categories, setCategories] = useState<Record<string, Category>>({
+        "Red": { description: "It's red", ref: useRef<HTMLInputElement>(null) },
+        "Green": { description: "It's green", ref: useRef<HTMLInputElement>(null) },
+        "Blue": { description: "It's blue", ref: useRef<HTMLInputElement>(null) }
+    });
     const [inputValue, setInputValue] = useState('');
     const [textareaValue, setTextareaValue] = useState('');
     const [editInputValue, setEditInputValue] = useState('');
-    const inputRef = useRef<HTMLInputElement>(null)
-    const editButtonRef = useRef<HTMLButtonElement>(null)
+    const inputRef = useRef<HTMLInputElement>(null); 
 
     // adding a category
     const addCategory = () => {
         if (inputValue.trim() !== '') {
-            const newCategory = inputValue.trim() + (textareaValue.trim() ? ` - ${textareaValue.trim()}` : '');
-            setCategoriesArray(prevState => [...prevState, newCategory]);
+            setCategories(prevState => {
+                const newCategory = inputValue.trim();
+                return {
+                    ...prevState,
+                    [newCategory]: { description: textareaValue.trim(), ref: inputRef }
+                };
+            });
             setInputValue('');
             setTextareaValue('');
         }
-    }
+    };
 
     // removing a category
-    const removeCategory = (index: number) => {
-        setCategoriesArray(prevState => {
-            const newArray = [...prevState];
-            newArray.splice(index, 1);
-            return newArray;
+    const removeCategory = (category: string) => {
+        setCategories(prevState => {
+            const newCategories = { ...prevState };
+            delete newCategories[category];
+            return newCategories;
         });
-    }
+    };
 
     // edit a category
-    const editCategory = () => {
+    const editCategory = (category: string) => {
+        const inputRef = categories[category]!.ref;
         if (inputRef.current) {
-            if (inputRef.current.style.display == 'none') {
-                inputRef.current.style.display = ''
-            } else {
-                return console.error("input hiding error editCategory")
-            }
-            if (editButtonRef.current) {
-                if (inputRef.current.style.display == '') {
-                    return editButtonRef.current.style.display = 'none'
-                } else {
-                    return console.error("button hiding error editCategory")
-                }
-            }
+            inputRef.current.style.display = '';
         }
-        // const entry = categoriesArray[index]?.split(' - ')
-        // if (entry) {
-        //     return
-        // }
-    }
+    };
+
     // confirm edit a category description
-    const confirmEditCategory = (index: number) => {
-        if (editInputValue != '') {
-            console.log(editInputValue);
-            if (categoriesArray) {
-                const newArray = [] as string[]
-                newArray.concat(categoriesArray)
-                console.log(newArray)
-                if (newArray) {
-                    const newString: string[] | undefined = (newArray[index]) ? newArray[index]!.split(" - ") : undefined
-                    newString !== undefined ? setEditInputValue(newString[1]!): void
-                    newArray[index] == newString!.join(" - ")
-                    console.log(newArray)
-                    setCategoriesArray(newArray)
-                    console.log(categoriesArray)
-                } else {
-                    return console.error("compiling the new array error, confirmEditCategory")
-                }
-            } else {
-                return console.error("error reading, confirmEditCategory")
-            }
+    const confirmEditCategory = (category: string) => {
+        const editInputValue = categories[category]!.ref.current?.value;
+        if (editInputValue && editInputValue.trim() !== '') {
+            setCategories(prevState => {
+                const newCategories = { ...prevState };
+                newCategories[category]!.description = editInputValue.trim();
+                return newCategories;
+            });
         } else {
-            return console.error("confirmEditCategory error")
+            console.error("Edit input value cannot be empty");
         }
 
-        if (inputRef.current) {
-            if (inputRef.current.style.display == '') {
-                inputRef.current.style.display = 'none'
-            } else {
-                console.error("input hiding error editCategory")
-            }
-            if (editButtonRef.current) {
-                if (inputRef.current.style.display == 'none') {
-                    editButtonRef.current.style.display = ''
-                } else {
-                    console.error("button hiding error editCategory")
-                }
-            }
-        }
-        return
-    }
+        categories[category]!.ref.current!.style.display = 'none';
+    };
 
     return (
         <>
@@ -266,18 +240,17 @@ export function Categories() {
                         </tr>
                     </thead>
                     <tbody>
-                        {categoriesArray.map((category, index) => (
+                        {Object.entries(categories).map(([category, { description, ref }], index) => (
                             <tr key={index}>
-                                <td>{category.split(' - ')[0]}</td>
-                                <td>{category.split(' - ')[1]}</td>
+                                <td>{category}</td>
+                                <td>{description}</td>
                                 <td>
-                                    <button className='btn btn-circle' onClick={editCategory} ref={editButtonRef} style={{ display: "" }}>Edit</button>
-                                    <input id='editId' onChange={(e) => setEditInputValue(e.target.value)} ref={inputRef} style={{ display: "none" }}></input>
-                                    <button className='btn btn-circle' onClick={() => confirmEditCategory(index)}></button>
+                                    <button className='btn btn-circle' onClick={() => editCategory(category)}>Edit</button>
+                                    <input onChange={(e) => setEditInputValue(e.target.value)} ref={ref} style={{ display: "none" }}></input>
+                                    <button className='btn btn-circle' onClick={() => confirmEditCategory(category)}>Confirm Edit</button>
                                 </td>
                                 <td>
-                                    <button className="btn btn-circle" onClick={() => removeCategory(index)}>
-                                        {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg> */}
+                                    <button className="btn btn-circle" onClick={() => removeCategory(category)}>
                                         Delete
                                     </button>
                                 </td>
