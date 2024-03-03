@@ -146,7 +146,6 @@ export function Categories() {
     });
     const [inputValue, setInputValue] = useState('');
     const [textareaValue, setTextareaValue] = useState('');
-    const [editInputValue, setEditInputValue] = useState('');
     const inputRef = useRef<HTMLInputElement>(null); 
 
     // adding a category
@@ -246,7 +245,7 @@ export function Categories() {
                                 <td>{description}</td>
                                 <td>
                                     <button className='btn btn-circle' onClick={() => editCategory(category)}>Edit</button>
-                                    <input onChange={(e) => setEditInputValue(e.target.value)} ref={ref} style={{ display: "none" }}></input>
+                                    <input ref={ref} style={{ display: "none" }}></input>
                                     <button className='btn btn-circle' onClick={() => confirmEditCategory(category)}>Confirm Edit</button>
                                 </td>
                                 <td>
