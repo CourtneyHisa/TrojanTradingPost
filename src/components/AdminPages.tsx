@@ -35,7 +35,7 @@ export function Home() {
 export function Products() {
     return (
         <>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto relative"> {/* Add 'relative' class */}
                 <table className="table table-xs">
                     <thead>
                         <tr>
@@ -67,33 +67,15 @@ export function Products() {
                                 <input type="file" className="file-input file-input-bordered file-input-xs w-full max-w-xs" />
                             </td>
                             <td>
-                                {/* // v0 by Vercel.
-                                // https://v0.dev/t/UhVw2HRszVg */}
-                                <button
-                                    className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 shrink-0"
-                                    type="button"
-                                    id="radix-:rq:"
-                                    aria-haspopup="menu"
-                                    aria-expanded="false"
-                                    data-state="closed"
-                                >
-                                    Category{" "}
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        className="w-4 h-4 ml-2"
-                                    >
-                                        <path d="M5 12h14"></path>
-                                        <path d="M12 5v14"></path>
-                                    </svg>
-                                </button></td>
+                                <div className="dropdown absolute z-50"> {/* Add 'absolute' class and set z-index to a high value */}
+                                    <button className="dropbtn">Select an Option</button>
+                                    <div className="dropdown-content">
+                                        <label><input type="radio" name="option" value="option1" /> Option 1</label>
+                                        <label><input type="radio" name="option" value="option2" /> Option 2</label>
+                                        <label><input type="radio" name="option" value="option3" /> Option 3</label>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -101,6 +83,7 @@ export function Products() {
         </>
     )
 }
+
 
 export function Users() {
     return (
@@ -146,7 +129,7 @@ export function Categories() {
     });
     const [inputValue, setInputValue] = useState('');
     const [textareaValue, setTextareaValue] = useState('');
-    const inputRef = useRef<HTMLInputElement>(null); 
+    const inputRef = useRef<HTMLInputElement>(null);
 
     // adding a category
     const addCategory = () => {
