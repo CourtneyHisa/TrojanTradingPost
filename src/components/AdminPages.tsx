@@ -32,56 +32,87 @@ export function Home() {
     )
 }
 
-export function Products() {
+interface Item {
+    id: number;
+    name: string;
+    price: number;
+    in_stock: number;
+    image: string;
+    category: string[];
+}
+
+export function Products(): JSX.Element {
+    const [items, setItems] = useState<Item[]>([
+        { id: 1, name: 'Red', price: 999.99, in_stock: 99, image: 'image', category: ['Red', 'Green', 'Blue'] },
+        { id: 2, name: 'Green', price: 999.99, in_stock: 99, image: 'image', category: ['Red', 'Green', 'Blue'] },
+        { id: 3, name: 'Blue', price: 999.99, in_stock: 99, image: 'image', category: ['Red', 'Green', 'Blue'] },
+    ]);
+
+    const [editableIndex, setEditableIndex] = useState<number>(-1);
+    const [editedPrice, setEditedPrice] = useState<string>('');
+
+    const handleEdit = (index: number): void => {
+        setEditableIndex(index);
+        setEditedPrice(items[index]!.price.toString());
+    };
+
+    const handleConfirmEdit = (index: number): void => {
+        if (editedPrice !== '') {
+            const updatedItems: Item[] = [...items];
+            updatedItems[index]!.price = parseFloat(editedPrice);
+            setItems(updatedItems);
+            setEditableIndex(-1);
+        }
+    };
+
     return (
         <>
-            <div className="overflow-x-auto relative"> {/* Add 'relative' class */}
+            <div className="overflow-x-auto relative">
                 <table className="table table-xs">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>#</th>
                             <th>Name</th>
                             <th>Price</th>
                             <th>In-Stock</th>
                             <th>Image</th>
-                            <th>Catgories</th>
+                            <th>Categories</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th>1</th>
-                            <td>${'item.name'}</td>
-                            <td>
-                                <input type="number" id="price" name="price" placeholder="0" step="0.01" min="0" max="10" />
-                            </td>
-                            <td>${'item.in_stock'}</td>
-                            {/* if there is a image it would most likely have a link to the image */}
-                            <td>
-                                {/* Should make it that if there is no image have the option to upload one.
-                                If not, maybe just add the ability to replace it or just leave it */}
-                                {/* {!item.image ? (
-                                    <form action='/action_page.php'>
-                                        <input type="file" id="myFile" name="filename"></input>
-                                        <input type="submit" className="btn btn-sm h-2" />
-                                    </form>) : null} */}
-                                <input type="file" className="file-input file-input-bordered file-input-xs w-full max-w-xs" />
-                            </td>
-                            <td>
-                                <div className="dropdown absolute z-50"> {/* Add 'absolute' class and set z-index to a high value */}
-                                    <button className="dropbtn">Select an Option</button>
-                                    <div className="dropdown-content">
-                                        <label><input type="radio" name="option" value="option1" /> Option 1</label>
-                                        <label><input type="radio" name="option" value="option2" /> Option 2</label>
-                                        <label><input type="radio" name="option" value="option3" /> Option 3</label>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                        {items.map((item, index) => (
+                            <tr key={item.id}>
+                                <td>{index + 1}</td>
+                                <td>{item.name}</td>
+                                <td>
+                                    {editableIndex === index ? (
+                                        <input type="number" value={editedPrice} onChange={(e) => setEditedPrice(e.target.value)} />
+                                    ) : (
+                                        item.price
+                                    )}
+                                </td>
+                                <td>{item.in_stock}</td>
+                                <td>
+                                    <input type="file" className="file-input file-input-bordered file-input-xs w-full max-w-xs" />
+                                </td>
+                                <td>
+                                    {item.category.join(', ')}
+                                </td>
+                                <td>
+                                    {editableIndex !== index && (
+                                        <button onClick={() => handleEdit(index)}>Edit</button>
+                                    )}
+                                    {editableIndex === index && (
+                                        <button onClick={() => handleConfirmEdit(index)}>Confirm</button>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
         </>
-    )
+    );
 }
 
 
