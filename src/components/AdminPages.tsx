@@ -1,5 +1,20 @@
 import React, { useRef, useState } from 'react';
 
+interface Item {
+    id: number;
+    name: string;
+    price: number;
+    in_stock: number;
+    image: string | null;
+    category: string[];
+    selectedCategories: string[];
+    ref: React.MutableRefObject<HTMLDialogElement | null>;
+}
+interface Category {
+    description: string;
+    ref: React.MutableRefObject<HTMLInputElement | null>;
+}
+
 export function Home() {
     return (
         <>
@@ -32,24 +47,43 @@ export function Home() {
     )
 }
 
-interface Item {
-    id: number;
-    name: string;
-    price: number;
-    in_stock: number;
-    image: string;
-    category: string[];
-}
-
-export function Products(): JSX.Element {
+export function Products() {
+    const categories = ["Red", "Green", "Blue"];
     const [items, setItems] = useState<Item[]>([
-        { id: 1, name: 'Red', price: 999.99, in_stock: 99, image: 'image', category: ['Red', 'Green', 'Blue'] },
-        { id: 2, name: 'Green', price: 999.99, in_stock: 99, image: 'image', category: ['Red', 'Green', 'Blue'] },
-        { id: 3, name: 'Blue', price: 999.99, in_stock: 99, image: 'image', category: ['Red', 'Green', 'Blue'] },
+        { id: 1, name: 'Red', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], ref: useRef<HTMLDialogElement>(null) },
+        { id: 2, name: 'Green', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], ref: useRef<HTMLDialogElement>(null) },
+        { id: 3, name: 'Blue', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], ref: useRef<HTMLDialogElement>(null) },
     ]);
-
     const [editableIndex, setEditableIndex] = useState<number>(-1);
     const [editedPrice, setEditedPrice] = useState<string>('');
+    const [showImage, setShowImage] = useState(false);
+
+    const handleImageClick = () => {
+        setShowImage(false);
+    };
+
+    const handleButtonClick = () => {
+        setShowImage(true);
+    };
+
+    const handleCategoryChange = (category: string, index: number) => {
+        console.log(category, index)
+        const updatedItems = [...items];
+        const item = updatedItems[index];
+        if (item!.selectedCategories.includes(category)) {
+            item!.selectedCategories = item!.selectedCategories.filter(cat => cat !== category);
+        } else {
+            item!.selectedCategories.push(category);
+        }
+        setItems(updatedItems);
+    };
+
+    const categoryEdit = (index: number) => {
+        const updatedItems = [...items];
+        updatedItems[index]!.category = updatedItems[index]!.selectedCategories; // Update category based on selectedCategories
+        setItems(updatedItems);
+        items[index]?.ref.current?.close()
+    };
 
     const handleEdit = (index: number): void => {
         setEditableIndex(index);
@@ -93,14 +127,40 @@ export function Products(): JSX.Element {
                                 </td>
                                 <td>{item.in_stock}</td>
                                 <td>
-                                    <input type="file" className="file-input file-input-bordered file-input-xs w-full max-w-xs" />
+                                    <td>
+                                        {item.image ? (
+                                            showImage ? (
+                                                <img src={item.image} onClick={handleImageClick} />
+                                            ) : (
+                                                <button onClick={handleButtonClick}>Show Image</button>
+                                            )
+                                        ) : (<input type="file" className="file-input file-input-bordered file-input-xs w-full max-w-xs" />)}
+
+                                    </td>
                                 </td>
                                 <td>
-                                    {item.category.join(', ')}
+                                    {item.category.length > 0 ? item.category.join(', ') : (<label>No Categories</label>)}
+                                    <button className="btn" onClick={() => item.ref.current?.showModal()}>Edit</button>
+                                    <dialog className="modal" ref={item.ref}>
+                                        <div className="modal-box">
+                                            <h3 className="font-bold text-lg">Choose Categories</h3>
+                                            <div className="form-control">
+                                                {categories.map(category => (
+                                                    <label className="label cursor-pointer" key={category}>
+                                                        <span className="label-text">{category}</span>
+                                                        <input type="checkbox" className="checkbox" checked={item.selectedCategories.includes(category)} onChange={() => handleCategoryChange(category, index)} />
+                                                    </label>
+                                                ))}
+                                            </div>
+                                            <div className="modal-action">
+                                                <button className="btn" onClick={() => categoryEdit(index)}>Save</button>
+                                            </div>
+                                        </div>
+                                    </dialog>
                                 </td>
                                 <td>
                                     {editableIndex !== index && (
-                                        <button onClick={() => handleEdit(index)}>Edit</button>
+                                        <button onClick={() => handleEdit(index)}>Edit Price</button>
                                     )}
                                     {editableIndex === index && (
                                         <button onClick={() => handleConfirmEdit(index)}>Confirm</button>
@@ -145,11 +205,6 @@ export function Users() {
             </div>
         </>
     )
-}
-
-interface Category {
-    description: string;
-    ref: React.MutableRefObject<HTMLInputElement | null>;
 }
 
 export function Categories() {
