@@ -1,4 +1,19 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+
+interface Item {
+    id: number;
+    name: string;
+    price: number;
+    in_stock: number;
+    image: string | null;
+    category: string[];
+    selectedCategories: string[];
+    ref: React.MutableRefObject<HTMLDialogElement | null>;
+}
+interface Category {
+    description: string;
+    ref: React.MutableRefObject<HTMLInputElement | null>;
+}
 
 export function Home() {
     return (
@@ -33,74 +48,133 @@ export function Home() {
 }
 
 export function Products() {
+    const categories = ["Red", "Green", "Blue"];
+    const [items, setItems] = useState<Item[]>([
+        { id: 1, name: 'Red', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], ref: useRef<HTMLDialogElement>(null) },
+        { id: 2, name: 'Green', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], ref: useRef<HTMLDialogElement>(null) },
+        { id: 3, name: 'Blue', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], ref: useRef<HTMLDialogElement>(null) },
+    ]);
+    const [editableIndex, setEditableIndex] = useState<number>(-1);
+    const [editedPrice, setEditedPrice] = useState<string>('');
+    const [showImage, setShowImage] = useState(false);
+
+    const handleImageClick = () => {
+        setShowImage(false);
+    };
+
+    const handleButtonClick = () => {
+        setShowImage(true);
+    };
+
+    const handleCategoryChange = (category: string, index: number) => {
+        console.log(category, index)
+        const updatedItems = [...items];
+        const item = updatedItems[index];
+        if (item!.selectedCategories.includes(category)) {
+            item!.selectedCategories = item!.selectedCategories.filter(cat => cat !== category);
+        } else {
+            item!.selectedCategories.push(category);
+        }
+        setItems(updatedItems);
+    };
+
+    const categoryEdit = (index: number) => {
+        const updatedItems = [...items];
+        updatedItems[index]!.category = updatedItems[index]!.selectedCategories; // Update category based on selectedCategories
+        setItems(updatedItems);
+        items[index]?.ref.current?.close()
+    };
+
+    const handleEdit = (index: number): void => {
+        setEditableIndex(index);
+        setEditedPrice(items[index]!.price.toString());
+    };
+
+    const handleConfirmEdit = (index: number): void => {
+        if (editedPrice !== '') {
+            const updatedItems: Item[] = [...items];
+            updatedItems[index]!.price = parseFloat(editedPrice);
+            setItems(updatedItems);
+            setEditableIndex(-1);
+        }
+    };
+
     return (
         <>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto relative">
                 <table className="table table-xs">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>#</th>
                             <th>Name</th>
                             <th>Price</th>
                             <th>In-Stock</th>
                             <th>Image</th>
-                            <th>Catgories</th>
+                            <th>Categories</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th>1</th>
-                            <td>${'item.name'}</td>
-                            <td>
-                                <input type="number" id="price" name="price" placeholder="0" step="0.01" min="0" max="10" />
-                            </td>
-                            <td>${'item.in_stock'}</td>
-                            {/* if there is a image it would most likely have a link to the image */}
-                            <td>
-                                {/* Should make it that if there is no image have the option to upload one.
-                                If not, maybe just add the ability to replace it or just leave it */}
-                                {/* {!item.image ? (
-                                    <form action='/action_page.php'>
-                                        <input type="file" id="myFile" name="filename"></input>
-                                        <input type="submit" className="btn btn-sm h-2" />
-                                    </form>) : null} */}
-                                <input type="file" className="file-input file-input-bordered file-input-xs w-full max-w-xs" />
-                            </td>
-                            <td>
-                                {/* // v0 by Vercel.
-                                // https://v0.dev/t/UhVw2HRszVg */}
-                                <button
-                                    className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 shrink-0"
-                                    type="button"
-                                    id="radix-:rq:"
-                                    aria-haspopup="menu"
-                                    aria-expanded="false"
-                                    data-state="closed"
-                                >
-                                    Category{" "}
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        className="w-4 h-4 ml-2"
-                                    >
-                                        <path d="M5 12h14"></path>
-                                        <path d="M12 5v14"></path>
-                                    </svg>
-                                </button></td>
-                        </tr>
+                        {items.map((item, index) => (
+                            <tr key={item.id}>
+                                <td>{index + 1}</td>
+                                <td>{item.name}</td>
+                                <td>
+                                    {editableIndex === index ? (
+                                        <input type="number" value={editedPrice} onChange={(e) => setEditedPrice(e.target.value)} />
+                                    ) : (
+                                        item.price
+                                    )}
+                                </td>
+                                <td>{item.in_stock}</td>
+                                <td>
+                                    <td>
+                                        {item.image ? (
+                                            showImage ? (
+                                                <img src={item.image} onClick={handleImageClick} />
+                                            ) : (
+                                                <button onClick={handleButtonClick}>Show Image</button>
+                                            )
+                                        ) : (<input type="file" className="file-input file-input-bordered file-input-xs w-full max-w-xs" />)}
+
+                                    </td>
+                                </td>
+                                <td>
+                                    {item.category.length > 0 ? item.category.join(', ') : (<label>No Categories</label>)}
+                                    <button className="btn" onClick={() => item.ref.current?.showModal()}>Edit</button>
+                                    <dialog className="modal" ref={item.ref}>
+                                        <div className="modal-box">
+                                            <h3 className="font-bold text-lg">Choose Categories</h3>
+                                            <div className="form-control">
+                                                {categories.map(category => (
+                                                    <label className="label cursor-pointer" key={category}>
+                                                        <span className="label-text">{category}</span>
+                                                        <input type="checkbox" className="checkbox" checked={item.selectedCategories.includes(category)} onChange={() => handleCategoryChange(category, index)} />
+                                                    </label>
+                                                ))}
+                                            </div>
+                                            <div className="modal-action">
+                                                <button className="btn" onClick={() => categoryEdit(index)}>Save</button>
+                                            </div>
+                                        </div>
+                                    </dialog>
+                                </td>
+                                <td>
+                                    {editableIndex !== index && (
+                                        <button onClick={() => handleEdit(index)}>Edit Price</button>
+                                    )}
+                                    {editableIndex === index && (
+                                        <button onClick={() => handleConfirmEdit(index)}>Confirm</button>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
         </>
-    )
+    );
 }
+
 
 export function Users() {
     return (
@@ -134,28 +208,62 @@ export function Users() {
 }
 
 export function Categories() {
-    const [categoriesArray, setCategoriesArray] = useState(["Red - It's red", "Green - It's green", "Blue - It's Blue"]);
+    const [categories, setCategories] = useState<Record<string, Category>>({
+        "Red": { description: "It's red", ref: useRef<HTMLInputElement>(null) },
+        "Green": { description: "It's green", ref: useRef<HTMLInputElement>(null) },
+        "Blue": { description: "It's blue", ref: useRef<HTMLInputElement>(null) }
+    });
     const [inputValue, setInputValue] = useState('');
     const [textareaValue, setTextareaValue] = useState('');
+    const inputRef = useRef<HTMLInputElement>(null);
 
     // adding a category
     const addCategory = () => {
         if (inputValue.trim() !== '') {
-            const newCategory = inputValue.trim() + (textareaValue.trim() ? ` - ${textareaValue.trim()}` : '');
-            setCategoriesArray(prevState => [...prevState, newCategory]);
-            setInputValue(''); 
-            setTextareaValue(''); 
+            setCategories(prevState => {
+                const newCategory = inputValue.trim();
+                return {
+                    ...prevState,
+                    [newCategory]: { description: textareaValue.trim(), ref: inputRef }
+                };
+            });
+            setInputValue('');
+            setTextareaValue('');
         }
-    }
+    };
 
     // removing a category
-    const removeCategory = (index: number) => {
-        setCategoriesArray(prevState => {
-            const newArray = [...prevState];
-            newArray.splice(index, 1);
-            return newArray;
+    const removeCategory = (category: string) => {
+        setCategories(prevState => {
+            const newCategories = { ...prevState };
+            delete newCategories[category];
+            return newCategories;
         });
-    }
+    };
+
+    // edit a category
+    const editCategory = (category: string) => {
+        const inputRef = categories[category]!.ref;
+        if (inputRef.current) {
+            inputRef.current.style.display = '';
+        }
+    };
+
+    // confirm edit a category description
+    const confirmEditCategory = (category: string) => {
+        const editInputValue = categories[category]!.ref.current?.value;
+        if (editInputValue && editInputValue.trim() !== '') {
+            setCategories(prevState => {
+                const newCategories = { ...prevState };
+                newCategories[category]!.description = editInputValue.trim();
+                return newCategories;
+            });
+        } else {
+            console.error("Edit input value cannot be empty");
+        }
+
+        categories[category]!.ref.current!.style.display = 'none';
+    };
 
     return (
         <>
@@ -196,16 +304,22 @@ export function Categories() {
                             <th>Name</th>
                             <th>Description</th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {categoriesArray.map((category, index) => (
+                        {Object.entries(categories).map(([category, { description, ref }], index) => (
                             <tr key={index}>
-                                <td>{category.split(' - ')[0]}</td>
-                                <td>{category.split(' - ')[1]}</td> 
+                                <td>{category}</td>
+                                <td>{description}</td>
                                 <td>
-                                    <button className="btn btn-circle" onClick={() => removeCategory(index)}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                    <button className='btn btn-circle' onClick={() => editCategory(category)}>Edit</button>
+                                    <input ref={ref} style={{ display: "none" }}></input>
+                                    <button className='btn btn-circle' onClick={() => confirmEditCategory(category)}>Confirm Edit</button>
+                                </td>
+                                <td>
+                                    <button className="btn btn-circle" onClick={() => removeCategory(category)}>
+                                        Delete
                                     </button>
                                 </td>
                             </tr>
