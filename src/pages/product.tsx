@@ -9,13 +9,21 @@ export default function product() {
     const itemLayout = "column-" + layout.toString()
     return (
         <>
-        <Navbar />
+        <div className="pb-24"><Navbar /></div>
+
+
+        {/* disclaimer: put on all pages??? */}
+        <div className="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 font-mhs" role="alert">
+            <span className="font-medium">Disclaimer: </span>This site is for reservations purposes only. Transactions are done in store.
+        </div>
+
+
+
         <button onClick={nextLayout}>Change Layout {layout}</button>
         <div className={itemLayout}>
             {itemLayout}
         <ItemCard />
-        <ItemCard />
-        <ItemCard />
+   
         </div>
         
         </>
