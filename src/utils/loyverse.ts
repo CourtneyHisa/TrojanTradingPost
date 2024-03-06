@@ -3,6 +3,7 @@ import { type UUID } from "crypto";
 export const AUTH = "Bearer " + process.env.LOYVERSE_TOKEN;
 export const API_BASE = "https://api.loyverse.com/v1.0";
 
+// SIMPLE AND CLEAN TYPES - DEV GENERATED
 /**
  * @todo DO SOMETHING WITH THIS AND ADD ONTO IT
  */
@@ -11,6 +12,7 @@ export type CleanItem = {
     name: string,
 };
 
+// RAW TYPES FROM COPYING LOYVERSE DOCS
 export type VariantStore = {
     store_id: string,
     pricing_type: string,
@@ -86,7 +88,41 @@ export type Item = {
     deleted_at: string | null,
     variants: Variant[]
 };
+
 export type Items = {
     items: Item[],
     cursor: string
 };
+
+export type Inventory = {
+    inventory_levels: {
+        variant_id: string;
+        store_id: string;
+        in_stock: number;
+        updated_at: string; // can be parsed to date obj
+    }[];
+    cursor: string;
+};
+
+export type Customer = {
+    id: string;
+    name: string;
+    email: string;
+    phone_number: string;
+    address: string;
+    city: string;
+    region: string;
+    postal_code: string;
+    country_code: string;
+    customer_code: string;
+    note: string;
+    first_visit?: string | null;
+    last_visit?: string | null;
+    total_visits?: number;
+    total_spent?: number;
+    total_points: number;
+    created_at?: string;
+    updated_at?: string;
+    deleted_at?: string;
+    permanent_deletion_at?: string;
+}

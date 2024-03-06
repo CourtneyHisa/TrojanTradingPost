@@ -40,6 +40,7 @@ export default function Landing() {
                 </div>
             </div>
             <Footer />
+            <Footer />
         </>
     )
 }
