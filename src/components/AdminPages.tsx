@@ -60,7 +60,6 @@ export function Products() {
     const [editableIndex, setEditableIndex] = useState<number>(-1);
     const [editedPrice, setEditedPrice] = useState<string>('');
     const [showImage, setShowImage] = useState(false);
-    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
     const handleImageClick = () => {
         setShowImage(false);
