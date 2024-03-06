@@ -5,8 +5,8 @@ export default function Navbar() {
         <>
             <div className="navbar flex h-24 w-screen bg-gray-300 border-b-4 border-gray-400 fixed top-0 z-10">
                 <div className="navbar-start pl-40 h-24 ">
-                    <Link href="/landing" className="btn-ghost my-auto h-16 ">
-                        <img src="TTPlogo.png" className="h-16">
+                    <Link href="/landing" className="btn-ghost my-auto h-14 ">
+                        <img src="TTPlogo.png" className="h-14">
                         </img>
                     </Link>
                 </div>
