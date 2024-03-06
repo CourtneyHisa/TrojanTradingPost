@@ -1,6 +1,7 @@
 import ItemCard from "~/components/ItemCard"
 import { useCallback, useState } from "react";
 import { api } from "~/utils/api";
+import Navbar from "~/components/Navbar"
 
 export default function product() {
 
