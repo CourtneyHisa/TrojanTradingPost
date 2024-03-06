@@ -13,28 +13,33 @@ export default function picutureRotation() {
     <>
       <div className="carousel w-full">
         <div className="carousel-item relative w-full">
+
           {/* Image currently shown determined by index */}
           <img src={picturesInCarosel[pictureNumber]} className="w-full" />
           {/* Fowards backwards buttons increment index value by 1 */}
           {/* Have button loop to top instead of negative */}
-          <div className="absolute flex left-5 right-5 h-full">
-            <button onClick={decreasepictureNumber} className="w-full h-full opacity-0 transition-opacity duration-300 transform hover:opacity-100">
-              {/* Change backward button with picture */}
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="black" className="">
+          <div className="absolute flex items-end justify-between w-full h-full ">
+            <button onClick={decreasepictureNumber} className="opacity-0 transition-opacity duration-300 transform hover:opacity-100">
+              {/* Change photo backward button */}
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="black" className="w-40 xl:w-80">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
               </svg>
             </button>
-            <Link href="/product" className="bg-yellow-900 border-4 border-yellow-400 text-white w-auto bottom-10 rounded-lg p-6 font-bold text-3xl xl:text-5xl">Start Shopping!</Link>
-            <button onClick={increasepictureNumber} className="w-full h-full opacity-0 transition-opacity duration-300 transform hover:opacity-100">
-              {/* Change foward button with picture */}
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="black" className=" ">
+
+            {/* Start Shopping button */}
+            <div className="relative align-bottom flex justify-end">
+              <Link href="/product" className="bg-yellow-900 border-4 border-yellow-400 text-white mb-16 items-center justify-center flex rounded-lg p-6 font-bold h-24 text-3xl xl:text-4xl">Start Shopping!</Link>
+            </div>
+
+            {/* Change photo foward button */}
+            <button onClick={increasepictureNumber} className=" opacity-0 transition-opacity duration-300 transform hover:opacity-100 ">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="black" className="w-40 xl:w-80">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
               </svg>
             </button>
           </div>
-
-            {/* Buttons to go to specific photo */}
-            <div className="absolute bottom-2 flex justify-center w-full gap-2">
+          {/* Buttons to go to specific photo */}
+          <div className="absolute bottom-2 flex justify-center w-full gap-2">
               {
                 picturesInCarosel.map(function (data, idx) {
                   return (
@@ -45,8 +50,8 @@ export default function picutureRotation() {
                 )
               }
             </div>
-          </div>
         </div>
+      </div>
     </>
   )
 }
