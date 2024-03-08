@@ -8,7 +8,7 @@ export default function Landing() {
     return (
         <>
             <Navbar />
-            <div className="bg-cream1 font-mhs pt-24">
+            <div className="bg-cream1 font-mhs">
                 <PictureRotation />
                 <div className="text-2xl md:px-16 xl:px-24 xl:text-3xl pb-8">
                     <div className="grid grid-cols-2 md:mt-8 xl:mt-16">
