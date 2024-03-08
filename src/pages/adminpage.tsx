@@ -1,7 +1,10 @@
 import { useRef, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import { Home, Products, Users, Categories } from '~/components/AdminPages'
+import Home from '~/components/AdminPages/Home';
+import Products from '~/components/AdminPages/Products';
+import Users from '~/components/AdminPages/Users';
+import Categories from '~/components/AdminPages/Categories';
 
 export default function AdminPage() {
     const mainRef = useRef<HTMLDivElement>(null);
