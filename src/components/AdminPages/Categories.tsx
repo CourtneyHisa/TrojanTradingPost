@@ -68,49 +68,23 @@ export default function Categories() {
             <div>
                 <h2>Categories</h2>
             </div>
-            <div>
-                <label className="form-control w-full max-w-xs">
-                    <div className="label">
-                        <span className="label-text">What would the name of the Category be?</span>
-                    </div>
-                    <input
-                        type="text"
-                        placeholder="Type here"
-                        className="input input-bordered w-full max-w-xs"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                    />
-                </label>
-                <label className="form-control">
-                    <div className="label">
-                        <span className="label-text">Description</span>
-                    </div>
-                    <textarea
-                        className="textarea textarea-bordered h-24"
-                        placeholder="Type Here"
-                        value={textareaValue}
-                        onChange={(e) => setTextareaValue(e.target.value)}
-                    ></textarea>
-                    <div className="label"></div>
-                </label>
-                <button className="btn" onClick={addCategory}>Add Category</button>
-            </div>
-            <div>
+            <div className="font-mhs mx-16">
                 <table className="table table-xs">
-                    <thead>
+                    <thead className="text-4xl">
                         <tr>
                             <th>Name</th>
                             <th>Description</th>
-                            <th></th>
+                            <th>Edit</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {Object.entries(categories).map(([category, { description, ref }], index) => (
                             <tr key={index}>
-                                <td>{category}</td>
-                                <td>{description}</td>
+                                <td className="text-xl">{category}</td>
+                                <td className="text-xl">{description}</td>
                                 <td>
+                                    
                                     <button className='btn btn-circle' onClick={() => editCategory(category)}>Edit</button>
                                     <input ref={ref} style={{ display: "none" }}></input>
                                     <button className='btn btn-circle' onClick={() => confirmEditCategory(category)}>Confirm Edit</button>
@@ -122,8 +96,51 @@ export default function Categories() {
                                 </td>
                             </tr>
                         ))}
+                        <tr>
+                            <td>
+                            <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                        <span className="label-text">What would the name of the Category be?</span>
+                    </div>
+                    <input
+                        type="text"
+                        placeholder="Type here"
+                        className="input input-bordered w-full max-w-xs"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                    />
+                </label>
+                            </td>
+                            <td>
+                            <label className="form-control">
+                    <div className="label">
+                        <span className="label-text">Description</span>
+                    </div>
+                    <textarea
+                        className="textarea textarea-bordered h-24"
+                        placeholder="Type Here"
+                        value={textareaValue}
+                        onChange={(e) => setTextareaValue(e.target.value)}
+                    ></textarea>
+                    <div className="label"></div>
+                </label>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            <button className="btn" onClick={addCategory}>Add Category</button>
+
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
+                
+            <div>
+                
+
+                
+            </div>
+
             </div>
         </>
     );
