@@ -2,18 +2,22 @@ import React, { useRef, useState } from 'react';
 
 interface Category {
     description: string;
-    ref: React.MutableRefObject<HTMLInputElement | null>;
+    inputRef: React.MutableRefObject<HTMLInputElement | null>;
+    editRef: React.MutableRefObject<HTMLButtonElement | null>;
+    confirmRef: React.MutableRefObject<HTMLButtonElement | null>;
 }
 
 export default function Categories() {
     const [categories, setCategories] = useState<Record<string, Category>>({
-        "Red": { description: "It's red", ref: useRef<HTMLInputElement>(null) },
-        "Green": { description: "It's green", ref: useRef<HTMLInputElement>(null) },
-        "Blue": { description: "It's blue", ref: useRef<HTMLInputElement>(null) }
+        "Red": { description: "It's red", inputRef: useRef<HTMLInputElement>(null), editRef: useRef<HTMLButtonElement>(null), confirmRef: useRef<HTMLButtonElement>(null) },
+        "Green": { description: "It's green", inputRef: useRef<HTMLInputElement>(null), editRef: useRef<HTMLButtonElement>(null), confirmRef: useRef<HTMLButtonElement>(null) },
+        "Blue": { description: "It's blue", inputRef: useRef<HTMLInputElement>(null), editRef: useRef<HTMLButtonElement>(null), confirmRef: useRef<HTMLButtonElement>(null) }
     });
     const [inputValue, setInputValue] = useState('');
     const [textareaValue, setTextareaValue] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
+    const editRef = useRef<HTMLButtonElement>(null)
+    const confirmRef = useRef<HTMLButtonElement>(null)
 
     // adding a category
     const addCategory = () => {
@@ -22,7 +26,7 @@ export default function Categories() {
                 const newCategory = inputValue.trim();
                 return {
                     ...prevState,
-                    [newCategory]: { description: textareaValue.trim(), ref: inputRef }
+                    [newCategory]: { description: textareaValue.trim(), inputRef: inputRef, editRef: editRef, confirmRef: confirmRef }
                 };
             });
             setInputValue('');
@@ -41,15 +45,23 @@ export default function Categories() {
 
     // edit a category
     const editCategory = (category: string) => {
-        const inputRef = categories[category]!.ref;
+        const inputRef = categories[category]!.inputRef;
+        const editRef = categories[category]!.editRef;
+        const confirmRef = categories[category]!.confirmRef;
         if (inputRef.current) {
             inputRef.current.style.display = '';
+        }
+        if (editRef.current) {
+            editRef.current.style.display = 'none';
+        }
+        if (confirmRef.current) {
+            confirmRef.current.style.display = ''
         }
     };
 
     // confirm edit a category description
     const confirmEditCategory = (category: string) => {
-        const editInputValue = categories[category]!.ref.current?.value;
+        const editInputValue = categories[category]!.inputRef.current?.value;
         if (editInputValue && editInputValue.trim() !== '') {
             setCategories(prevState => {
                 const newCategories = { ...prevState };
@@ -60,7 +72,9 @@ export default function Categories() {
             console.error("Edit input value cannot be empty");
         }
 
-        categories[category]!.ref.current!.style.display = 'none';
+        categories[category]!.inputRef.current!.style.display = 'none';
+        categories[category]!.confirmRef.current!.style.display = 'none';
+        categories[category]!.editRef.current!.style.display = '';
     };
 
     return (
@@ -106,14 +120,14 @@ export default function Categories() {
                         </tr>
                     </thead>
                     <tbody>
-                        {Object.entries(categories).map(([category, { description, ref }], index) => (
+                        {Object.entries(categories).map(([category, { description, inputRef, editRef, confirmRef }], index) => (
                             <tr key={index}>
                                 <td>{category}</td>
                                 <td>{description}</td>
                                 <td>
-                                    <button className='btn btn-circle' onClick={() => editCategory(category)}>Edit</button>
-                                    <input ref={ref} style={{ display: "none" }}></input>
-                                    <button className='btn btn-circle' onClick={() => confirmEditCategory(category)}>Confirm Edit</button>
+                                    <button className='btn btn-circle' onClick={() => editCategory(category)} ref={editRef} style={{ display: "" }}>Edit</button>
+                                    <input ref={inputRef} style={{ display: "none" }}></input>
+                                    <button className='btn btn-circle' onClick={() => confirmEditCategory(category)} style={{ display: "none" }} ref={confirmRef}>Confirm Edit</button>
                                 </td>
                                 <td>
                                     <button className="btn btn-circle" onClick={() => removeCategory(category)}>
