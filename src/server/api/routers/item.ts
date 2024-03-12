@@ -17,6 +17,7 @@ export const itemRouter = createTRPCRouter({
           'Authorization': AUTH
         }
       });
+      console.log(data)
       return data;
     }),
   getItemById: publicProcedure

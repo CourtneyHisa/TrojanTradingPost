@@ -1,62 +1,62 @@
-import { useCallback, useState } from "react";
-import { Items } from "~/utils/loyverse";
+import { useState } from "react";
+import type { Item, Items, Variant } from "~/utils/loyverse";
+
 export default function ItemCard({ items }: { items: Items }) {
 
-  let itemList = [
-    { itemName: "Apple", itemPrice: "4.00", itemDescription: "Fresh, red, grown locally by agriculture classes", itemImage: "https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg", itemStock: 6, itemRestockDate: "10/12/23" },
-    { itemName: "Lemon", itemPrice: "4.00", itemDescription: "Fresh, grown locally by agriculture classes, good in lemonade", itemImage: "https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg", itemStock: 6, itemRestockDate: "10/12/23" },
-    { itemName: "Dog", itemPrice: "10.00", itemDescription: "Fresh, edible and mustache", itemImage: "https://i.redd.it/1eog44lx72681.jpg", itemStock: 6, itemRestockDate: "10/12/23" },
-    { itemName: "Dog", itemPrice: "10.00", itemDescription: "Fresh, red", itemImage: "https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg", itemStock: 6, itemRestockDate: "10/12/23" },
-    { itemName: "Dog", itemPrice: "10.00", itemDescription: "Fresh, red", itemImage: "https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg", itemStock: 6, itemRestockDate: "10/12/23" },
-    { itemName: "Dog", itemPrice: "10.00", itemDescription: "Fresh, red", itemImage: "https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg", itemStock: 6, itemRestockDate: "10/12/23" },
-    { itemName: "Dog", itemPrice: "10.00", itemDescription: "Fresh, red", itemImage: "https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg", itemStock: 6, itemRestockDate: "10/12/23" },
-    { itemName: "Dog", itemPrice: "10.00", itemDescription: "Fresh, red", itemImage: "https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg", itemStock: 6, itemRestockDate: "10/12/23" },
-    { itemName: "Dog", itemPrice: "10.00", itemDescription: "Fresh, red", itemImage: "https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg", itemStock: 6, itemRestockDate: "10/12/23" }
-
-  ]
-
-  //Counter for number reserving button
-  const [reserving, setreserving] = useState(0);
-  const increaseReserving = useCallback(() => setreserving(state => state + 1), setreserving)
-  const decreaseReserving = useCallback(() => setreserving(state => state - 1), setreserving)
+    //Counter for number reserving button
+    const [reserving, setreserving] = useState(0);
+    // const increaseReserving = useCallback(
+    //   () => setreserving((state) => state + 1),
+    //   [setreserving],
+    // );
+    // const decreaseReserving = useCallback(
+    //   () => setreserving((state) => state - 1),
+    //   [setreserving],
+    // );
+    console.log(items.items.filter(e=>!e.image_url))
   return (
     <div className="flex items-center justify-center">
       <div className="container m-auto grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 w-3/5 h-256">
 
-        {itemList.map((item) =>
+        {items.items.flatMap(item => {
+          const variants: (Variant & {item: Item})[] = [];
+          for(const variant of [...item.variants])
+            variants.push({...variant, item});
+          return variants;
+        }).map((variant) =>
           <div>
             <div className=" card-compact drop-shadow-md w-full h-full bg-base-100 shadow-xl col-span-1 sm:flex-wrap">
               <div>
                 {/* image */}
                 <div className="flex items-center justify-center">
-                  <img src={item.itemImage} className=" object-cover h-64 w-full" />
+                  <img src={variant.item.image_url} className=" object-cover h-64 w-full" />
                 </div>
                 {/* Item Name */}
 
 
                 <div className="bg-signborder2 h-32 p-4">
-                  <h2 className="items-center text-center font-sans text-white">{item.itemName}</h2>
-                  <p className="font-mhs text-white">{item.itemDescription}</p>
+                  <h2 className="items-center text-center font-sans text-white">{variant.item.item_name}</h2>
+                  <p className="font-mhs text-white">{variant.item.description}</p>
                 </div>
 
                 <div className="card-body bg-signborder1 flex items-center justify-center h-1/4">
                   {/* Price tag */}
-                  <div className="flex-1 font-mhs text-white">${item.itemPrice}</div>
+                  <div className="flex-1 font-mhs text-white">${variant.purchase_cost}</div>
 
                   {/* If there is stock, then display the number in stock, else show the restock date*/}
                   <div className="flex-1">
-                    {item.itemStock != 0 ?
+                    {Array.isArray(variant.item.components) ? variant.item.components.find(c => c.variant_id === variant.variant_id)?.quantity != 0 ?
 
                       <div className="flex-1 font-mhs text-white">
                         {/* Number in stock */}
-                        Number in stock: {item.itemStock}
+                        Number in stock: {"not implemented"}
                       </div>
                       :
                       <div className="flex-1 font-mhs text-white">
                         {/* Restock Date */}
-                        Restock date: {item.itemRestockDate}
+                        Restock date: {"not implemented"}
                       </div>
-                    }
+                    : 'bruh'}
                   </div>
 
 

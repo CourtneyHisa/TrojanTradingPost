@@ -69,6 +69,7 @@ export type Item = {
     id: UUID,
     handle: string,
     item_name: string,
+    description: string;
     reference_id: string | null,
     category_id: UUID | null,
     track_stock: boolean,
