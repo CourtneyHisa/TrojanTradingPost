@@ -83,11 +83,11 @@ export default function Categories() {
                 <h2>Categories</h2>
             </div>
             <div className="font-mhs mx-16">
-                <table className="table table-xs">
+                <table className="table-fixed">
                     <thead className="text-4xl">
                         <tr>
                             <th>Name</th>
-                            <th>Description</th>
+                            <th className="w-1/2">Description</th>
                             <th>Edit</th>
                             <th></th>
                         </tr>
@@ -103,22 +103,19 @@ export default function Categories() {
                                     <input ref={ref} style={{ display: "none" }}></input>
                                     <button className='btn btn-circle' onClick={() => confirmEditCategory(category)}>Confirm Edit</button>
                                 </td>
-                                <td>
-                                    <button className="btn btn-circle" onClick={() => removeCategory(category)}>
+                                <td className="">
+                                    <button className="btn btn-error sm:btn-sm md:btn-md lg:btn-lg" onClick={() => removeCategory(category)}>
                                         Delete
                                     </button>
                                 </td>
                             </tr>
                         ))}
-                        <tr>
+                        <tr >
                             <td>
                             <label className="form-control w-full max-w-xs">
-                    <div className="label">
-                        <span className="label-text">What would the name of the Category be?</span>
-                    </div>
                     <input
                         type="text"
-                        placeholder="Type here"
+                        placeholder="Category name"
                         className="input input-bordered w-full max-w-xs"
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
@@ -127,23 +124,19 @@ export default function Categories() {
                             </td>
                             <td>
                             <label className="form-control">
-                    <div className="label">
-                        <span className="label-text">Description</span>
-                    </div>
                     <textarea
-                        className="textarea textarea-bordered h-24"
-                        placeholder="Type Here"
+                        type="text"
+                        className="input input-bordered w-full max-w-xs"
+                        placeholder="Description"
                         value={textareaValue}
                         onChange={(e) => setTextareaValue(e.target.value)}
                     ></textarea>
-                    <div className="label"></div>
                 </label>
                             </td>
                             <td>
+                            <button className="btn" onClick={addCategory}>Add Category</button>
                             </td>
                             <td>
-                            <button className="btn" onClick={addCategory}>Add Category</button>
-
                             </td>
                         </tr>
                     </tbody>
