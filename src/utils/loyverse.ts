@@ -22,14 +22,6 @@ export type VariantStore = {
     low_stock: null | number
 };
 
-export type Category = {
-    id: string,
-    name: string,
-    color: string | null,
-    created_at: string | null
-    deleted_at: string | null
-}
-
 export type Variant = {
     variant_id: UUID,
     item_id: UUID,
