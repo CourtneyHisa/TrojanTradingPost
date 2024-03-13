@@ -79,31 +79,27 @@ export default function Categories() {
 
     return (
         <>
-            <div>
-                <h2>Categories</h2>
-            </div>
             <div className="font-mhs mx-16">
-                <table className="table-fixed">
-                    <thead className="text-4xl">
-                        <tr>
-                            <th>Name</th>
+                <table className="w-full divide-y-4 divide-brown1">
+                    <thead className="text-4xl ">
+                        <tr className="w-full">
+                            <th className="w-1/6">Name</th>
                             <th className="w-1/2">Description</th>
-                            <th>Edit</th>
-                            <th></th>
+                            <th className="">Edit</th>
+                            <th className=""></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="">
                         {Object.entries(categories).map(([category, { description, ref }], index) => (
-                            <tr key={index}>
-                                <td className="text-xl">{category}</td>
-                                <td className="text-xl">{description}</td>
-                                <td>
-                                    
-                                    <button className='btn btn-circle' onClick={() => editCategory(category)}>Edit</button>
-                                    <input ref={ref} style={{ display: "none" }}></input>
-                                    <button className='btn btn-circle' onClick={() => confirmEditCategory(category)}>Confirm Edit</button>
-                                </td>
+                            <tr className="border-b-2  border-b-brown1" key={index}>
+                                <td className="text-center text-xl">{category}</td>
+                                <td className="text-xl px-2">{description}</td>
                                 <td className="">
+                                    <button className='btn btn-circle' onClick={() => editCategory(category)} ref={editRef} style={{ display: "" }}>Edit</button>
+                                    <input ref={inputRef} style={{ display: "none" }}></input>
+                                    <button className='btn btn-circle' onClick={() => confirmEditCategory(category)} style={{ display: "none" }} ref={confirmRef}>Confirm Edit</button>
+                                </td>
+                                <td className="py-2">
                                     <button className="btn btn-error sm:btn-sm md:btn-md lg:btn-lg" onClick={() => removeCategory(category)}>
                                         Delete
                                     </button>
@@ -125,8 +121,7 @@ export default function Categories() {
                             <td>
                             <label className="form-control">
                     <textarea
-                        type="text"
-                        className="input input-bordered w-full max-w-xs"
+                        className="input input-bordered w-full m-2 p-2"
                         placeholder="Description"
                         value={textareaValue}
                         onChange={(e) => setTextareaValue(e.target.value)}
@@ -134,9 +129,9 @@ export default function Categories() {
                 </label>
                             </td>
                             <td>
-                            <button className="btn" onClick={addCategory}>Add Category</button>
                             </td>
                             <td>
+                            <button className="btn" onClick={addCategory}>Add Category</button>
                             </td>
                         </tr>
                     </tbody>
