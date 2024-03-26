@@ -13,11 +13,12 @@ export default function ItemCard({ items }: { items: Items }) {
     //   () => setreserving((state) => state - 1),
     //   [setreserving],
     // );
-    console.log(items.items.filter(e=>!e.image_url))
+    // console.log(items.items.filter(e=>!e.image_url))
   return (
     <div className="flex items-center justify-center">
       <div className="container m-auto grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 w-3/5 h-256">
 
+        {/* bring up variants from the item array into one list */}
         {items.items.flatMap(item => {
           const variants: (Variant & {item: Item})[] = [];
           for(const variant of [...item.variants])
@@ -29,14 +30,14 @@ export default function ItemCard({ items }: { items: Items }) {
               <div>
                 {/* image */}
                 <div className="flex items-center justify-center">
-                  <img src={variant.item.image_url} className=" object-cover h-64 w-full" />
+                  <img src={variant.item.image_url || "https://http.cat/404"} className=" object-cover h-64 w-full" />
                 </div>
                 {/* Item Name */}
 
 
                 <div className="bg-signborder2 h-32 p-4">
                   <h2 className="items-center text-center font-sans text-white">{variant.item.item_name}</h2>
-                  <p className="font-mhs text-white">{variant.item.description}</p>
+                  {variant.item.description != null && <p className="font-mhs text-white">{variant.item.description.replaceAll(/<\/?p>/g, "")}</p>}
                 </div>
 
                 <div className="card-body bg-signborder1 flex items-center justify-center h-1/4">
