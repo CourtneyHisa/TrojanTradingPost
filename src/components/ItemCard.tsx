@@ -37,7 +37,7 @@ export default function ItemCard({ items }: { items: Items }) {
 
                 <div className="bg-signborder2 h-32 p-4">
                   <h2 className="items-center text-center font-sans text-white">{variant.item.item_name}</h2>
-                  {variant.item.description != null && <p className="font-mhs text-white">{variant.item.description.replaceAll(/<\/?p>/g, "")}</p>}
+                  {variant.item.description && <p className="font-mhs text-white">{variant.item.description.replaceAll(/<\/?p>/g, "")}</p>}
                 </div>
 
                 <div className="card-body bg-signborder1 flex items-center justify-center h-1/4">
