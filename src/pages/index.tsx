@@ -1,8 +1,5 @@
 import { signIn, signOut, useSession } from "next-auth/react";
-import Head from "next/head";
-import Link from "next/link";
-import Landing from "~/pages/landing"
-import { api } from "~/utils/api";
+import Landing from "~/pages/landing";
 
 export default function Home() {
   return (
