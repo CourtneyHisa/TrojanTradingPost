@@ -1,7 +1,8 @@
 import { type UUID } from "crypto";
 
 export const AUTH = "Bearer " + process.env.LOYVERSE_TOKEN;
-export const API_BASE = "https://api.loyverse.com/v1.0";
+       const API_VER  = "1.0"
+export const API_BASE = "https://api.loyverse.com/v" + API_VER;
 
 // SIMPLE AND CLEAN TYPES - DEV GENERATED
 /**
@@ -12,7 +13,10 @@ export type CleanItem = {
     name: string,
 };
 
+export type VariantLinkedItem = Variant & {item: Item};
+export type VaritStock = VariantLinkedItem & { in_stock: number; last_restock: Date; };
 // RAW TYPES FROM COPYING LOYVERSE DOCS
+// may be inaccurate, assume all properties are nullish ( type | null )
 export type VariantStore = {
     store_id: string,
     pricing_type: string,

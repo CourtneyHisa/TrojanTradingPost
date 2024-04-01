@@ -6,7 +6,7 @@ import ItemCard from "~/components/ItemCard";
 import { api } from "~/utils/api";
 export default function Landing() {
 
-    const items = api.item.getAll.useQuery();
+    const items = api.item.getCleanVariants.useQuery();
 
     return (
         <>
@@ -39,7 +39,7 @@ export default function Landing() {
                 </div>
                 <div className='pb-8'>
                     <h1 className="text-center text-4xl font-bold text-brown2 pt-6 pb-4">Popular Items!</h1>                
-                    {!(items.isFetched && items.data) ? <div>Loading</div> : <ItemCard items={items.data}/>}
+                    {!(items.isFetched && items.data) ? <div>Loading</div> : <ItemCard variants={items.data}/>}
                 </div>
             </div>
             <Footer />
