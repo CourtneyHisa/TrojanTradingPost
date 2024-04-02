@@ -16,12 +16,11 @@ export default function ItemCard({ variants }: { variants: VaritStock[] }) {
     // console.log(items.items.filter(e=>!e.image_url))
   return (
     <div className="flex items-center justify-center">
-      <div className="container m-auto grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 w-3/5 h-256">
-
+      <div className="container m-auto grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 w-3 h-256">
         {/* bring up variants from the item array into one list */}
         {variants.map((variant) =>
           <div>
-            <div className=" card-compact drop-shadow-md w-full h-full bg-base-100 shadow-xl col-span-1 sm:flex-wrap">
+            <div className="card-compact drop-shadow-md w-full h-full bg-base-100 shadow-xl col-span-1 sm:flex-wrap">
               <div>
                 {/* image */}
                 <div className="flex items-center justify-center">

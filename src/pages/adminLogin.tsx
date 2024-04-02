@@ -9,7 +9,7 @@ export default function adminLogin() {
                             Sign in to your account
                         </h1>
                             <form className="space-y-4 md:space-y-6 group" noValidate>
-                                <label for="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white h-24">
+                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white h-24">
                                     <span>Email</span>
                                     <input
                                         type="email"
@@ -25,7 +25,7 @@ export default function adminLogin() {
                                         </span>
                                    
                                 </label>
-                                <label for="password" class="mb-5">
+                                <label htmlFor="password" className="mb-5">
                                     <span>Password</span>
                                     <input
                                         type="password"
