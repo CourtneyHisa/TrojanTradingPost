@@ -2,33 +2,37 @@ import { z } from "zod";
 import axios from "axios";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { API_BASE, AUTH, type Items, type Item, type Inventory, Variant, VariantLinkedItem, VaritStock } from "~/utils/loyverse";
+import { API_BASE, AUTH, type LVItemsWrapper, type Item, type Inventory, Variant, VariantLinkedItem, VaritStock, LVCategoriesWrapper } from "~/utils/loyverse";
 import { TRPCError } from "@trpc/server";
 
-// warning: NOT Items. Item[] is NOT Items.
-const cleanItem = (items: Item[]): Item[] => {
-  return items;
-}
-
-export const itemRouter = createTRPCRouter({
+// interface with loyverse
+export const lvRouter = createTRPCRouter({
   getAll: publicProcedure
     .query(async () => {
-      const { data }: { data: Items; } = await axios.get(API_BASE + "/items", {
+      const { data }: { data: LVItemsWrapper; } = await axios.get(API_BASE + "/items", {
         headers: {
           'Authorization': AUTH
         }
       });
       return data;
     }),
+  // good, BUT GETS THE ENTIRE INVENTORY EVERY TIME
+  // consider somehow paginating results
   getCleanVariants: publicProcedure
-    .query(async () => {
-      const { data }: { data: Items; } = await axios.get(API_BASE + "/items", {
+    .query(async (): Promise<VaritStock[]> => {
+      const { data }: { data: LVItemsWrapper; } = await axios.get(API_BASE + "/items", {
         headers: {
           'Authorization': AUTH
         }
       });
 
       const { data: inventory }: { data: Inventory; } = await axios.get(API_BASE + "/inventory", {
+        headers: {
+          'Authorization': AUTH
+        }
+      });
+
+      const { data: { categories } }: { data: LVCategoriesWrapper; } = await axios.get(API_BASE + "/categories", {
         headers: {
           'Authorization': AUTH
         }
@@ -67,8 +71,9 @@ export const itemRouter = createTRPCRouter({
         );
       
       return variants.map<VaritStock>(v=> {
+        const catEntry = categories.find(category => category.id === v.item.category_id);
         const invEntry = inventory.inventory_levels.find(stock => stock.variant_id === v.variant_id)!;
-        return {...v, in_stock: invEntry.in_stock, last_restock: new Date(invEntry.updated_at)} as VaritStock;
+        return {...v, in_stock: invEntry.in_stock, last_restock: new Date(invEntry.updated_at), category: catEntry} as VaritStock;
       });
     }),
   getItemById: publicProcedure
@@ -88,7 +93,15 @@ export const itemRouter = createTRPCRouter({
           'Authorization': AUTH
         }
       });
-      console.log(data);
       return data;
+    }),
+  getCategories: publicProcedure
+    .query(async () => {
+      const { data }: { data: LVCategoriesWrapper; } = await axios.get(API_BASE + "/categories", {
+        headers: {
+          'Authorization': AUTH
+        }
+      });
+      return data.categories;
     }),
 });

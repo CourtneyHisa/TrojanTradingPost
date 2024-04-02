@@ -14,7 +14,7 @@ export type CleanItem = {
 };
 
 export type VariantLinkedItem = Variant & {item: Item};
-export type VaritStock = VariantLinkedItem & { in_stock: number; last_restock: Date; };
+export type VaritStock = VariantLinkedItem & { in_stock: number; last_restock: Date; category?: Category; };
 // RAW TYPES FROM COPYING LOYVERSE DOCS
 // may be inaccurate, assume all properties are nullish ( type | null )
 export type VariantStore = {
@@ -25,6 +25,10 @@ export type VariantStore = {
     optimal_stock: null | number,
     low_stock: null | number
 };
+
+export type LVCategoriesWrapper = {
+    categories: Category[];
+}
 
 export type Category = {
     id: string,
@@ -102,7 +106,7 @@ export type Item = {
     variants: Variant[]
 };
 
-export type Items = {
+export type LVItemsWrapper = {
     items: Item[],
     cursor: string
 };

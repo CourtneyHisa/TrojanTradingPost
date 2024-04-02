@@ -7,7 +7,7 @@ import { TRPCError } from "@trpc/server";
 import { api } from "~/utils/api";
 
 export default function lol(props: { id: string}) {
-    const aaa = api.item.getItemById.useQuery({ id: props.id });
+    const aaa = api.loyverse.getItemById.useQuery({ id: props.id });
     return JSON.stringify(aaa, null, '\t')
 }
 
@@ -21,7 +21,7 @@ export const getStaticProps:GetStaticProps = async (context) => {
     const id = context.params?.id;
     console.log(context.params)
     if(typeof id !== "string") throw new TRPCError({ code: "NOT_FOUND" });
-    await ssg.item.getItemById.prefetch({ id });
+    await ssg.loyverse.getItemById.prefetch({ id });
   
     return {
       props: {

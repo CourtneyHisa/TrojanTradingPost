@@ -6,7 +6,7 @@ import ItemCard from "~/components/ItemCard";
 import { api } from "~/utils/api";
 export default function Landing() {
 
-    const items = api.item.getCleanVariants.useQuery();
+    const items = api.loyverse.getCleanVariants.useQuery();
 
     return (
         <>

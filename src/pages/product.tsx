@@ -7,7 +7,7 @@ export default function product() {
     const [layout, setLayout] = useState(0);
     const nextLayout = useCallback(() => setLayout(state => state+1), [setLayout])
     const itemLayout = "column-" + layout.toString()
-    const items = api.item.getCleanVariants.useQuery();
+    const items = api.loyverse.getCleanVariants.useQuery();
 
     return (
         <>
