@@ -2,51 +2,44 @@ import { z } from "zod";
 import axios from "axios";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { API_BASE, AUTH, type Items, type Item, type Inventory, Variant, VariantLinkedItem, VaritStock } from "~/utils/loyverse";
-import { TRPCError } from "@trpc/server";
-
-// warning: NOT Items. Item[] is NOT Items.
-const cleanItem = (items: Item[]): Item[] => {
-  return items;
-}
+import { API_BASE, AUTH, LVVariantsWrapper } from "~/utils/loyverse";
+import { Prisma } from "@prisma/client";
+import { db } from "~/server/db";
 
 export const mongoRouter = createTRPCRouter({
-    getItemByLoyverseId: publicProcedure
-    .input(z.object({id: z.string()}))    
+  getItemByLoyverseId: publicProcedure
+    .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
-        return await ctx.db.item.findFirst({
-            where: {
-                OR: [
-                    {
-                        loyverseItemID: input.id
-                    },
-                    {
-                        loyverseVariantID: input.id
-                    }
-                ]
-            }
-        });
+      return await ctx.db.item.findFirst({
+        where: {
+          OR: [
+            {
+              loyverseItemID: input.id,
+            },
+            {
+              loyverseVariantID: input.id,
+            },
+          ],
+        },
+      });
     }),
 
-    updateDatabase: publicProcedure
-        .mutation(async ({ ctx }) => {
-            const { data: retrievedItems }: { data: Items; } = await axios.get(API_BASE + "/items", {
-                headers: {
-                  'Authorization': AUTH
-                }
-            });
+  updateDatabase: publicProcedure.mutation(async ({ ctx }) => {
+    const { data: retrievedVariants }: { data: LVVariantsWrapper } =
+      await axios.get(API_BASE + "/variants", {
+        headers: {
+          Authorization: AUTH,
+        },
+      });
 
-            for ( const item of retrievedItems.items) {
-                for (const variant of item.variants) 
-                {
-                    ctx.db.item.create({
-                        data: {
-                            restockDate: null,
-                            loyverseItemID: variant.item_id,
-                            loyverseVariantID: variant.variant_id
-                        }
-                    });
-                }
-            }
-        })
-})  
+    const l = await ctx.db.item.count();
+    console.log(retrievedVariants.variants.map(v => v.item_id + '\t' + v.variant_id + '\t').join('\n'));
+    // await ctx.db.item.createMany({
+    //   data: retrievedVariants.variants.map((variant) => ({
+    //     restockDate: null,
+    //     loyverseItemID: variant.item_id,
+    //     loyverseVariantID: variant.variant_id,
+    //   })),
+    // });
+  }),
+});

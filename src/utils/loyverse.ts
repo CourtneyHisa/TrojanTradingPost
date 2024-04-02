@@ -13,56 +13,73 @@ export type CleanItem = {
     name: string,
 };
 
+// works but confusing syntax
+// export type LVWrapper<T, Plural extends string> = {
+//     [key in Plural]: T[];
+// } & { cursor?: string; };
+
+export type LVWrapper = {
+    cursor?: string;
+};
+
+export type LVItemsWrapper = {
+    items: Item[];
+} & LVWrapper;
+
+export type LVCategoriesWrapper = {
+    categories: Category[];
+} & LVWrapper;
+
+export type LVVariantsWrapper = {
+    variants: Variant[];
+} & LVWrapper;
+
 export type VariantLinkedItem = Variant & {item: Item};
 export type VaritStock = VariantLinkedItem & { in_stock: number; last_restock: Date; category?: Category; };
 // RAW TYPES FROM COPYING LOYVERSE DOCS
 // may be inaccurate, assume all properties are nullish ( type | null )
 export type VariantStore = {
-    store_id: string,
-    pricing_type: string,
-    price: null | number,
-    available_for_sale: boolean,
-    optimal_stock: null | number,
-    low_stock: null | number
+    store_id: string;
+    pricing_type: string;
+    price: null | number;
+    available_for_sale: boolean;
+    optimal_stock: null | number;
+    low_stock: null | number;
 };
 
-export type LVCategoriesWrapper = {
-    categories: Category[];
-}
-
 export type Category = {
-    id: string,
-    name: string,
-    color: string | null,
-    created_at: string | null
-    deleted_at: string | null
-}
+    id: string;
+    name: string;
+    color: string | null;
+    created_at: string | null;
+    deleted_at: string | null;
+};
 
 export type Variant = {
-    variant_id: UUID,
-    item_id: UUID,
-    sku: string,
-    reference_variant_id: string | null,
-    option1_value: string | null,
-    option2_value: string | null,
-    option3_value: string | null,
-    barcode: string | null,
-    cost: number,
-    purchase_cost: number | null,
-    default_pricing_type: string,
-    default_price: number | null,
-    stores: VariantStore[],
-    created_at: string | null,
-    updated_at: string | null,
-    deleted_at: string | null
+    variant_id: UUID;
+    item_id: UUID;
+    sku: string;
+    reference_variant_id: string | null;
+    option1_value: string | null;
+    option2_value: string | null;
+    option3_value: string | null;
+    barcode: string | null;
+    cost: number;
+    purchase_cost: number | null;
+    default_pricing_type: string;
+    default_price: number | null;
+    stores: VariantStore[];
+    created_at: string | null;
+    updated_at: string | null;
+    deleted_at: string | null;
 };
 
 export type Shape = "SQUARE" | "CIRCLE" | "SUN" | "OCTAGON";
 export type Color = "GREY" | "RED" | "PINK" | "ORANGE" | "YELLOW" | "GREEN" | "BLUE" | "PURPLE";
 
 export type Component = {
-    variant_id: UUID,
-    quantity: number
+    variant_id: UUID;
+    quantity: number;
 };
 /**
  * Item has overall description for its variants.
@@ -74,41 +91,36 @@ export type Component = {
  * different description and different image.
  */
 export type Item = {
-    id: UUID,
-    handle: string,
-    item_name: string,
+    id: UUID;
+    handle: string;
+    item_name: string;
     description: string | null;
-    reference_id: string | null,
-    category_id: UUID | null,
-    track_stock: boolean,
-    sold_by_weight: boolean,
-    is_composite: boolean,
-    use_production: boolean,
-    components: Component[],
-    primary_supplier_id: UUID | null,
+    reference_id: string | null;
+    category_id: UUID | null;
+    track_stock: boolean;
+    sold_by_weight: boolean;
+    is_composite: boolean;
+    use_production: boolean;
+    components: Component[];
+    primary_supplier_id: UUID | null;
     tax_ids: [
         UUID,
         UUID
-    ],
+    ];
     modifiers_ids: [
         string,
         string
-    ],
-    form: Shape /* SHAPE */,
-    color: Color /* COLOR */,
-    image_url: string,
-    option1_name: string | null,
-    option2_name: string | null,
-    option3_name: string | null,
-    created_at: string | null,
-    updated_at: string | null,
-    deleted_at: string | null,
-    variants: Variant[]
-};
-
-export type LVItemsWrapper = {
-    items: Item[],
-    cursor: string
+    ];
+    form: Shape /* SHAPE */;
+    color: Color /* COLOR */;
+    image_url: string;
+    option1_name: string | null;
+    option2_name: string | null;
+    option3_name: string | null;
+    created_at: string | null;
+    updated_at: string | null;
+    deleted_at: string | null;
+    variants: Variant[];
 };
 
 export type Inventory = {

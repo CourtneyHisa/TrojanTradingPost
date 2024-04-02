@@ -1,6 +1,6 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { lvRouter } from "./routers/loyverse";
-import { databaseRouter } from "./routers/db";
+import { mongoRouter } from "./routers/mongo";
 
 /**
  * This is the primary router for your server.
@@ -9,7 +9,7 @@ import { databaseRouter } from "./routers/db";
  */
 export const appRouter = createTRPCRouter({
   loyverse: lvRouter,
-  database: databaseRouter
+  mongo: mongoRouter
 });
 
 // export type definition of API
