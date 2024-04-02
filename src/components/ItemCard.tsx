@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { Items } from "~/utils/loyverse";
 export default function ItemCard({ items }: { items: Items }) {
 
-  let itemList = [
+  const itemList = [
     { itemName: "Apple", itemPrice: "4.00", itemDescription: "Fresh, red, grown locally by agriculture classes", itemImage: "https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg", itemStock: 6, itemRestockDate: "10/12/23" },
     { itemName: "Lemon", itemPrice: "4.00", itemDescription: "Fresh, grown locally by agriculture classes, good in lemonade", itemImage: "https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg", itemStock: 6, itemRestockDate: "10/12/23" },
     { itemName: "Dog", itemPrice: "10.00", itemDescription: "Fresh, edible and mustache", itemImage: "https://i.redd.it/1eog44lx72681.jpg", itemStock: 6, itemRestockDate: "10/12/23" },
