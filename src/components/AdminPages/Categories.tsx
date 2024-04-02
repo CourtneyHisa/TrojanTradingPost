@@ -45,18 +45,18 @@ export default function Categories() {
 
     // edit a category
     const editCategory = (category: string) => {
-        const inputRef = categories[category]!.inputRef;
-        const editRef = categories[category]!.editRef;
-        const confirmRef = categories[category]!.confirmRef;
-        if (inputRef.current) {
+        const inputRef = categories[category]?.inputRef;
+        const editRef = categories[category]?.editRef;
+        const confirmRef = categories[category]?.confirmRef;
+        if (inputRef?.current) {
             inputRef.current.style.display = '';
-        }
-        if (editRef.current) {
+        } else return console.error("Input error editCategory")
+        if (editRef?.current) {
             editRef.current.style.display = 'none';
-        }
-        if (confirmRef.current) {
+        } else return console.error("Edit error editcategory")
+        if (confirmRef?.current) {
             confirmRef.current.style.display = ''
-        }
+        } else return console.error("Confirm error editcategory")
     };
 
     // confirm edit a category description
@@ -90,7 +90,7 @@ export default function Categories() {
                         </tr>
                     </thead>
                     <tbody className="">
-                        {Object.entries(categories).map(([category, { description, ref }], index) => (
+                        {Object.entries(categories).map(([category, { description, editRef, inputRef, confirmRef }], index) => (
                             <tr className="border-b-2  border-b-brown1" key={index}>
                                 <td className="text-center text-xl">{category}</td>
                                 <td className="text-xl px-2">{description}</td>
