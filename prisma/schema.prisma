@@ -14,21 +14,11 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Category {
-    id         String @id @default(auto()) @map("_id") @db.ObjectId
-    loyverseId String @unique
-    name       String
-    items      Item[]
-}
-
 model Item {
     id                String        @id @default(auto()) @map("_id") @db.ObjectId
     restockDate       String?
     loyverseItemID    String
     loyverseVariantID String?
-    hasVariants       Boolean
-    category          Category      @relation(fields: [categoryId], references: [id])
-    categoryId        String        @db.ObjectId
     reservations      Reservation[]
 
     @@unique(fields: [loyverseItemID, loyverseVariantID])
