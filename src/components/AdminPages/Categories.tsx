@@ -18,7 +18,6 @@ export default function Categories() {
     const inputRef = useRef<HTMLInputElement>(null);
     const editRef = useRef<HTMLButtonElement>(null)
     const confirmRef = useRef<HTMLButtonElement>(null)
-
     // adding a category
     const addCategory = () => {
         if (inputValue.trim() !== '') {
@@ -33,7 +32,6 @@ export default function Categories() {
             setTextareaValue('');
         }
     };
-
     // removing a category
     const removeCategory = (category: string) => {
         setCategories(prevState => {
@@ -42,7 +40,6 @@ export default function Categories() {
             return newCategories;
         });
     };
-
     // edit a category
     const editCategory = (category: string) => {
         const inputRef = categories[category]?.inputRef;
@@ -58,7 +55,6 @@ export default function Categories() {
             confirmRef.current.style.display = ''
         } else return console.error("Confirm error editcategory")
     };
-
     // confirm edit a category description
     const confirmEditCategory = (category: string) => {
         const editInputValue = categories[category]!.inputRef.current?.value;
@@ -71,12 +67,10 @@ export default function Categories() {
         } else {
             console.error("Edit input value cannot be empty");
         }
-
         categories[category]!.inputRef.current!.style.display = 'none';
         categories[category]!.confirmRef.current!.style.display = 'none';
         categories[category]!.editRef.current!.style.display = '';
     };
-
     return (
         <>
             <div className="font-mhs mx-16">
@@ -94,11 +88,11 @@ export default function Categories() {
                             <tr className="border-b-2  border-b-brown1" key={index}>
                                 <td className="text-center text-xl">{category}</td>
                                 <td className="text-xl px-2 hover:bg-gray-100">
-                                    <input ref={inputRef} style={{ display: "" }} defaultValue={description} />
+                                    <h2 style={{display: " "}}>{description}</h2>
+                                    <input ref={inputRef} style={{ display: "none" }} defaultValue={description} />
                                 </td>
                                 <td className="">
                                     <button className='btn btn-circle' onClick={() => editCategory(category)} ref={editRef} style={{ display: "" }}>Edit</button>
-
                                     <button className='btn btn-circle' onClick={() => confirmEditCategory(category)} style={{ display: "none" }} ref={confirmRef}>Confirm Edit</button>
                                 </td>
                                 <td className="py-2">
@@ -138,13 +132,8 @@ export default function Categories() {
                         </tr>
                     </tbody>
                 </table>
-                
             <div>
-                
-
-                
             </div>
-
             </div>
         </>
     );
