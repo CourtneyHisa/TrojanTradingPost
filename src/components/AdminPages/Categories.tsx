@@ -93,10 +93,12 @@ export default function Categories() {
                         {Object.entries(categories).map(([category, { description, editRef, inputRef, confirmRef }], index) => (
                             <tr className="border-b-2  border-b-brown1" key={index}>
                                 <td className="text-center text-xl">{category}</td>
-                                <td className="text-xl px-2">{description}</td>
+                                <td className="text-xl px-2 hover:bg-gray-100">
+                                    <input ref={inputRef} style={{ display: "" }} defaultValue={description} />
+                                </td>
                                 <td className="">
                                     <button className='btn btn-circle' onClick={() => editCategory(category)} ref={editRef} style={{ display: "" }}>Edit</button>
-                                    <input ref={inputRef} style={{ display: "none" }}></input>
+
                                     <button className='btn btn-circle' onClick={() => confirmEditCategory(category)} style={{ display: "none" }} ref={confirmRef}>Confirm Edit</button>
                                 </td>
                                 <td className="py-2">
