@@ -69,7 +69,7 @@ export default function Home() {
                     prevInformation.opening.dayTime.day[0] = days[i]!
                     return prevInformation
                 })
-            } else {
+            }
                 if (endDateDay === i + 1) {
                     setInformation(prevState => {
                         const prevInformation = { ...prevState }
@@ -77,7 +77,6 @@ export default function Home() {
                         return prevInformation
                     })
                 }
-            }
         }
         for (let i = 0; i < months.length; i++) {
             if (startDateMonth === i) {
@@ -86,7 +85,7 @@ export default function Home() {
                     prevInformation.opening.date[0] = months[i] + " " + startDateDate.toString();
                     return prevInformation
                 })
-            } else {
+            }
                 if (endDateMonth === i) {
                     setInformation(prevState => {
                         const prevInformation = { ...prevState }
@@ -94,7 +93,7 @@ export default function Home() {
                         return prevInformation
                     })
                 }
-            }
+            
         }
         console.log(information)
     }
@@ -107,6 +106,10 @@ export default function Home() {
                 return modalDays
             })
         }
+    }
+
+    function handleTimeChange() {
+        throw new Error("Function not implemented.");
     }
 
     return (
@@ -201,10 +204,10 @@ export default function Home() {
                         <div className="modal-box">
                             <h3 className="font-bold text-lg">Choose what time the days are open</h3>
                             <div className="form-control">
-                                {days.map(day => (
+                                {modalDays.map((day) => (
                                     <label className="label cursor-pointer" key={day}>
                                         <span className="label-text">{day}</span>
-                                        <input type="checkbox" className="checkbox"></input>
+                                        <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" onChange={handleTimeChange}/>
                                     </label>
                                 ))}
                             </div>
