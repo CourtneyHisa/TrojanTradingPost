@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -70,13 +70,13 @@ export default function Home() {
                     return prevInformation
                 })
             }
-                if (endDateDay === i + 1) {
-                    setInformation(prevState => {
-                        const prevInformation = { ...prevState }
-                        prevInformation.opening.dayTime.day[1] = days[i]!
-                        return prevInformation
-                    })
-                }
+            if (endDateDay === i + 1) {
+                setInformation(prevState => {
+                    const prevInformation = { ...prevState }
+                    prevInformation.opening.dayTime.day[1] = days[i]!
+                    return prevInformation
+                })
+            }
         }
         for (let i = 0; i < months.length; i++) {
             if (startDateMonth === i) {
@@ -86,30 +86,20 @@ export default function Home() {
                     return prevInformation
                 })
             }
-                if (endDateMonth === i) {
-                    setInformation(prevState => {
-                        const prevInformation = { ...prevState }
-                        prevInformation.opening.date[1] = months[i] + " " + endDateDate.toString();
-                        return prevInformation
-                    })
-                }
-            
+            if (endDateMonth === i) {
+                setInformation(prevState => {
+                    const prevInformation = { ...prevState }
+                    prevInformation.opening.date[1] = months[i] + " " + endDateDate.toString();
+                    return prevInformation
+                })
+            }
+
         }
         console.log(information)
     }
 
-    const handleModalDay = (day: string) => {
-        if (day) {
-            setModalDays(prevState => {
-                const modalDays = { ...prevState }
-                prevState.push(day)
-                return modalDays
-            })
-        }
-    }
-
     function handleTimeChange() {
-        throw new Error("Function not implemented.");
+        null
     }
 
     return (
@@ -188,7 +178,11 @@ export default function Home() {
                                 {days.map(day => (
                                     <label className="label cursor-pointer" key={day}>
                                         <span className="label-text">{day}</span>
-                                        <input type="checkbox" className="checkbox" onChange={() => handleModalDay(day)}></input>
+                                        <input type="checkbox" className="checkbox" onChange={() => {
+                                            if (day) {
+                                                setModalDays([...modalDays, day])
+                                            }
+                                        }}></input>
                                     </label>
                                 ))}
                             </div>
@@ -200,21 +194,32 @@ export default function Home() {
                             </div>
                         </div>
                     </dialog>
-                    <dialog id="my_modal_1" className="modal" ref={timeModalRef}>
+                    <dialog className="modal" ref={timeModalRef}>
                         <div className="modal-box">
                             <h3 className="font-bold text-lg">Choose what time the days are open</h3>
                             <div className="form-control">
-                                {modalDays.map((day) => (
+                                {modalDays.map(day => (
                                     <label className="label cursor-pointer" key={day}>
                                         <span className="label-text">{day}</span>
-                                        <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" onChange={handleTimeChange}/>
+                                        <label className="form-control w-full max-w-xs">
+                                            <div className="label">
+                                                <span className="label-text">Start Time</span>
+                                            </div>
+                                            <input type="text" placeholder="EX: 12:30" className="input input-bordered w-full max-w-xs" />
+                                        </label>
+                                        <label className="form-control w-full max-w-xs">
+                                            <div className="label">
+                                                <span className="label-text">End Time</span>
+                                            </div>
+                                            <input type="text" placeholder="EX: 12:30" className="input input-bordered w-full max-w-xs" />
+                                        </label>
                                     </label>
                                 ))}
                             </div>
                             <div className="modal-action">
                                 <form method="dialog">
                                     {/* if there is a button in form, it will close the modal */}
-                                    <button className="btn">Next</button>
+                                    <button className="btn">Apply</button>
                                 </form>
                             </div>
                         </div>
