@@ -42,6 +42,7 @@ export default function Categories() {
     };
     // edit a category
     const editCategory = (category: string) => {
+        const h2Element = document.getElementById(category);
         const inputRef = categories[category]?.inputRef;
         const editRef = categories[category]?.editRef;
         const confirmRef = categories[category]?.confirmRef;
@@ -54,6 +55,9 @@ export default function Categories() {
         if (confirmRef?.current) {
             confirmRef.current.style.display = ''
         } else return console.error("Confirm error editcategory")
+        if (h2Element) {
+            h2Element.style.display = 'none';
+        } else return console.error("description error editCategory")
     };
     // confirm edit a category description
     const confirmEditCategory = (category: string) => {
@@ -70,6 +74,7 @@ export default function Categories() {
         categories[category]!.inputRef.current!.style.display = 'none';
         categories[category]!.confirmRef.current!.style.display = 'none';
         categories[category]!.editRef.current!.style.display = '';
+        document.getElementById(category)!.style.display = ''
     };
     return (
         <>
@@ -88,7 +93,7 @@ export default function Categories() {
                             <tr className="border-b-2  border-b-brown1" key={index}>
                                 <td className="text-center text-xl">{category}</td>
                                 <td className="text-xl px-2 hover:bg-gray-100">
-                                    <h2 style={{display: " "}}>{description}</h2>
+                                    <h2 id={category} style={{display: ""}}>{description}</h2>
                                     <input ref={inputRef} style={{ display: "none" }} defaultValue={description} />
                                 </td>
                                 <td className="">
