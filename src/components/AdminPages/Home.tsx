@@ -62,22 +62,6 @@ export default function Home() {
                 return prevInformation
             })
         }
-        for (let i = 0; i < days.length; i++) {
-            if (startDateDay === i + 1) {
-                setInformation(prevState => {
-                    const prevInformation = { ...prevState }
-                    prevInformation.opening.dayTime.day[0] = days[i]!
-                    return prevInformation
-                })
-            }
-            if (endDateDay === i + 1) {
-                setInformation(prevState => {
-                    const prevInformation = { ...prevState }
-                    prevInformation.opening.dayTime.day[1] = days[i]!
-                    return prevInformation
-                })
-            }
-        }
         for (let i = 0; i < months.length; i++) {
             if (startDateMonth === i) {
                 setInformation(prevState => {
@@ -98,8 +82,25 @@ export default function Home() {
         console.log(information)
     }
 
-    function handleTimeChange() {
-        null
+    const handleTimeChange = () => {
+        setInformation(prevState => {
+            const prevInformation = { ...prevState }
+            prevInformation.opening.dayTime.day = modalDays
+            return prevInformation
+        })
+        const newModalTimes: string[][] = [];
+        modalDays.forEach(day => {
+            const startTimeInput = document.getElementById(`${day}-start-time`) as HTMLInputElement;
+            const endTimeInput = document.getElementById(`${day}-end-time`) as HTMLInputElement;
+            if (startTimeInput && endTimeInput) {
+                newModalTimes.push([startTimeInput.value, endTimeInput.value]);
+            }
+        });
+        setInformation(prevState => {
+            const prevInformation = { ...prevState };
+            prevInformation.opening.dayTime.time = newModalTimes;
+            return prevInformation;
+        });
     }
 
     return (
@@ -205,13 +206,13 @@ export default function Home() {
                                             <div className="label">
                                                 <span className="label-text">Start Time</span>
                                             </div>
-                                            <input type="text" placeholder="EX: 12:30" className="input input-bordered w-full max-w-xs" />
+                                            <input id={`${day}-start-time`} type="text" placeholder="EX: 12:30" className="input input-bordered w-full max-w-xs" />
                                         </label>
                                         <label className="form-control w-full max-w-xs">
                                             <div className="label">
                                                 <span className="label-text">End Time</span>
                                             </div>
-                                            <input type="text" placeholder="EX: 12:30" className="input input-bordered w-full max-w-xs" />
+                                            <input id={`${day}-end-time`} type="text" placeholder="EX: 12:30" className="input input-bordered w-full max-w-xs" />
                                         </label>
                                     </label>
                                 ))}
@@ -219,7 +220,7 @@ export default function Home() {
                             <div className="modal-action">
                                 <form method="dialog">
                                     {/* if there is a button in form, it will close the modal */}
-                                    <button className="btn">Apply</button>
+                                    <button className="btn" onClick={handleTimeChange}>Apply</button>
                                 </form>
                             </div>
                         </div>
