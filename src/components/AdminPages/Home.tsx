@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -37,13 +37,11 @@ export default function Home() {
     const locationRef = useRef<HTMLInputElement>(null);
     const daysModalRef = useRef<HTMLDialogElement>(null);
     const timeModalRef = useRef<HTMLDialogElement>(null);
-    const [modalDays, setModalDays] = useState<string[]>([])
+    const [modalDays, setModalDays] = useState<string[]>(information.opening.dayTime.day)
     const [startDatePicker, setStartDatePicker] = useState<Date>(new Date());
     const [endDatePicker, setEndDatePicker] = useState<Date>(new Date());
 
     const handleSubmit = () => {
-        const startDateDay = startDatePicker.getDay();
-        const endDateDay = endDatePicker.getDay();
         const startDateMonth = startDatePicker.getMonth();
         const startDateDate = startDatePicker.getDate();
         const endDateMonth = endDatePicker.getMonth();
@@ -179,11 +177,18 @@ export default function Home() {
                                 {days.map(day => (
                                     <label className="label cursor-pointer" key={day}>
                                         <span className="label-text">{day}</span>
-                                        <input type="checkbox" className="checkbox" onChange={() => {
-                                            if (day) {
-                                                setModalDays([...modalDays, day])
-                                            }
-                                        }}></input>
+                                        <input
+                                            type="checkbox"
+                                            className="checkbox"
+                                            checked={modalDays.includes(day)}
+                                            onChange={() => {
+                                                if (!modalDays.includes(day)) {
+                                                    setModalDays([...modalDays, day]);
+                                                } else {
+                                                    setModalDays(prevState => prevState.filter(item => item !== day));
+                                                }
+                                            }}
+                                        />
                                     </label>
                                 ))}
                             </div>
@@ -220,6 +225,7 @@ export default function Home() {
                             <div className="modal-action">
                                 <form method="dialog">
                                     {/* if there is a button in form, it will close the modal */}
+                                    <button className="btn" onClick={() => daysModalRef.current?.showModal()}>Back</button>
                                     <button className="btn" onClick={handleTimeChange}>Apply</button>
                                 </form>
                             </div>
