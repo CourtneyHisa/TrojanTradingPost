@@ -32,15 +32,13 @@ export default function Home() {
             },
         },
     });
-
     const aboutRef = useRef<HTMLTextAreaElement>(null);
     const locationRef = useRef<HTMLInputElement>(null);
     const daysModalRef = useRef<HTMLDialogElement>(null);
     const timeModalRef = useRef<HTMLDialogElement>(null);
-    const [modalDays, setModalDays] = useState<string[]>(information.opening.dayTime.day)
+    const [modalDays, setModalDays] = useState<string[]>(information.opening.dayTime.day);
     const [startDatePicker, setStartDatePicker] = useState<Date>(new Date());
     const [endDatePicker, setEndDatePicker] = useState<Date>(new Date());
-
     const handleSubmit = () => {
         const startDateMonth = startDatePicker.getMonth();
         const startDateDate = startDatePicker.getDate();
@@ -48,44 +46,37 @@ export default function Home() {
         const endDateDate = endDatePicker.getDate();
         if (aboutRef.current?.value) {
             setInformation(prevState => {
-                const prevInformation = { ...prevState }
-                prevInformation.about = aboutRef.current!.value
-                return prevInformation
+                const prevInformation = { ...prevState };
+                prevInformation.about = aboutRef.current!.value;
+                return prevInformation;
             })
         }
         if (locationRef.current?.value) {
             setInformation(prevState => {
-                const prevInformation = { ...prevState }
-                prevInformation.location = locationRef.current!.value
-                return prevInformation
+                const prevInformation = { ...prevState };
+                prevInformation.location = locationRef.current!.value;
+                return prevInformation;
             })
         }
         for (let i = 0; i < months.length; i++) {
             if (startDateMonth === i) {
                 setInformation(prevState => {
-                    const prevInformation = { ...prevState }
+                    const prevInformation = { ...prevState };
                     prevInformation.opening.date[0] = months[i] + " " + startDateDate.toString();
-                    return prevInformation
+                    return prevInformation;
                 })
             }
             if (endDateMonth === i) {
                 setInformation(prevState => {
-                    const prevInformation = { ...prevState }
+                    const prevInformation = { ...prevState };
                     prevInformation.opening.date[1] = months[i] + " " + endDateDate.toString();
-                    return prevInformation
+                    return prevInformation;
                 })
             }
-
         }
-        console.log(information)
+        console.log(information);
     }
-
     const handleTimeChange = () => {
-        setInformation(prevState => {
-            const prevInformation = { ...prevState }
-            prevInformation.opening.dayTime.day = modalDays
-            return prevInformation
-        })
         const newModalTimes: string[][] = [];
         modalDays.forEach(day => {
             const startTimeInput = document.getElementById(`${day}-start-time`) as HTMLInputElement;
@@ -95,10 +86,11 @@ export default function Home() {
             }
         });
         setInformation(prevState => {
-            const prevInformation = { ...prevState };
+            const prevInformation = { ...prevState }
+            prevInformation.opening.dayTime.day = modalDays;
             prevInformation.opening.dayTime.time = newModalTimes;
             return prevInformation;
-        });
+        })
     }
 
     return (
