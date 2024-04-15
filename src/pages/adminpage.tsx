@@ -43,6 +43,7 @@ export default function AdminPage() {
     return (
 
         <>
+        <div>
             {/* <label className="btn btn-circle swap swap-rotate">
 
                 <input type="checkbox" />
@@ -78,6 +79,7 @@ export default function AdminPage() {
                         <Home />
                     </div>
                 </div>
+            </div>
             </div>
         </>
     )

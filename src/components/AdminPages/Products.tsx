@@ -15,7 +15,7 @@ interface Item {
 }
 
 export default function Products() {
-    const categories = ["Red", "Green", "Blue"];
+    const categories = ["Red", "Green", "Blue", "Long ass example category just to visualize asdfghjkl;f afsdvba bfawbvbasvjhZSDjb"];
     const [items, setItems] = useState<Item[]>([
         { id: 1, name: 'Red', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], restock_date: new Date(), ref: useRef<HTMLDialogElement>(null) },
         { id: 2, name: 'Green', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], restock_date: new Date(), ref: useRef<HTMLDialogElement>(null) },
@@ -77,53 +77,46 @@ export default function Products() {
 
     return (
         <>
-            <div className="overflow-x-auto relative h-screen">
-                <table className="table table-xs">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>In-Stock</th>
-                            <th>Image</th>
-                            <th>Categories</th>
-                            <th>Restock</th>
+            <div className="overflow-x-auto relative h-screen pt-10 font-mhs">
+                <table className="w-full">
+                    <thead className="text-left">
+                        <tr className="border-b-2">
+                            <th className='w-1/12 pb-2 pl-16'>#</th>
+                            <th className='w-2/12'>Name</th>
+                            <th className='w-1/12'>Price</th>
+                            <th className='w-1/12'>In-Stock</th>
+                            <th className='w-1/12'>Image</th>
+                            <th className='w-3/12'>Categories</th>
+                            <th className='w-1/12 pr-16'>Restock</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className=" ">
                         {items.map((item, index) => (
-                            <tr key={item.id}>
-                                <td>{index + 1}</td>
-                                <td>{item.name}</td>
-                                <td>
-                                    {editableIndex === index ? (
-                                        <input type="number" value={editedPrice} onChange={(e) => setEditedPrice(e.target.value)} />
-                                    ) : (
-                                        item.price
-                                    )}
-                                    {editableIndex !== index && (
-                                        <button onClick={() => handleEdit(index)} className='px-2'>Edit Price</button>
-                                    )}
-                                    {editableIndex === index && (
-                                        <button onClick={() => handleConfirmEdit(index)} className='px-2'>Confirm</button>
-                                    )}
+                            <tr key={item.id} className="border-b-2">
+                                {/* ID */}
+                                <td className="w-1/12 py-3 pl-16">{index + 1}</td>
+                                {/* Name */}
+                                <td className="w-2/12">
+                                    {item.name}
                                 </td>
-                                <td>{item.in_stock}</td>
-                                <td>
-                                    <td>
-                                        {item.image ? (
-                                            showImage ? (
-                                                <img src={item.image} onClick={handleImageClick} />
-                                            ) : (
-                                                <button onClick={handleButtonClick}>Show Image</button>
-                                            )
-                                        ) : (<input type="file" className="file-input file-input-bordered file-input-xs w-full max-w-xs" />)}
-                                    </td>
+                                {/* Price  */}
+                                <td className="w-1/12">
+                                    $ {item.price}
                                 </td>
-                                <td>
-                                    {item.category.length > 0 ? item.category.join(', ') : (<label>No Categories</label>)}
-                                    <button className="px-2" onClick={() => item.ref.current?.showModal()} >Edit</button>
-                                    <dialog className="modal" ref={item.ref}>
+                                {/* Stock */}
+                                <td className="w-1/12">{item.in_stock}</td>
+                                {/* Image */}
+                                <td className="w-1/12">
+                                    <button
+                                        className="btn-sm btn-outline btn"
+                                        onClick={handleButtonClick}>
+                                        Show Image</button>
+                                </td>
+                                {/* Categories */}
+                                <td className="w-3/12">
+                                    {item.category.length > 0 ? item.category.join(" / ") : (<label>No Categories</label>)}
+                                    <button className="px-2 text-blue-500 -mr-28" onClick={() => item.ref.current?.showModal()} >Edit</button>
+                                    <dialog className="modal " ref={item.ref}>
                                         <div className="modal-box">
                                             <h3 className="font-bold text-lg">Choose Categories</h3>
                                             <div className="form-control">
@@ -140,12 +133,14 @@ export default function Products() {
                                         </div>
                                     </dialog>
                                 </td>
-                                <td>
+                                {/* Restock */}
+                                <td className="w-1/12 text-blue-500 pr-16">
                                     <DatePicker
                                         showIcon
                                         toggleCalendarOnIconClick
                                         selected={item.restock_date}
                                         onChange={(date) => date ? newDate(index, date) : item.restock_date}
+                                        className='-mr-20'
                                     />
                                 </td>
                             </tr>
