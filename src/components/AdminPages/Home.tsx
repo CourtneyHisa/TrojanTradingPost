@@ -118,10 +118,14 @@ export default function Home() {
                             <p className="pb-2">
                                 {information.opening.date[0]} - {information.opening.date[1]}{" "}
                                 <br />
-                                {information.opening.dayTime.day[0]}:{" "}
-                                {information.opening.dayTime.time[0]?.join(" - ")} <br />
-                                {information.opening.dayTime.day[1]}:{" "}
-                                {information.opening.dayTime.time[1]?.join(" - ")}
+                                {information.opening.dayTime.day.length == 0 ? "There is no set days ; time" : null}
+                                {information.opening.dayTime.day.length >= 1 ? (information.opening.dayTime.day[0] + ": " + information.opening.dayTime.time[0]?.join(" - ")) : null} <br />
+                                {information.opening.dayTime.day.length >= 2 ? (information.opening.dayTime.day[1] + ": " + information.opening.dayTime.time[1]?.join(" - ")) : null} <br />
+                                {information.opening.dayTime.day.length >= 3 ? (information.opening.dayTime.day[2] + ": " + information.opening.dayTime.time[2]?.join(" - ")) : null} <br />
+                                {information.opening.dayTime.day.length >= 4 ? (information.opening.dayTime.day[3] + ": " + information.opening.dayTime.time[3]?.join(" - ")) : null} <br />
+                                {information.opening.dayTime.day.length >= 5 ? (information.opening.dayTime.day[4] + ": " + information.opening.dayTime.time[4]?.join(" - ")) : null} <br />
+                                {information.opening.dayTime.day.length >= 6 ? (information.opening.dayTime.day[5] + ": " + information.opening.dayTime.time[5]?.join(" - ")) : null} <br />
+                                {information.opening.dayTime.day.length >= 7 ? (information.opening.dayTime.day[6] + ": " + information.opening.dayTime.time[6]?.join(" - ")) : null} <br />
                             </p>
                         </div>
                     </div>
@@ -187,7 +191,7 @@ export default function Home() {
                             <div className="modal-action">
                                 <form method="dialog">
                                     {/* if there is a button in form, it will close the modal */}
-                                    <button className="btn" onClick={() => timeModalRef.current?.showModal()}>Next</button>
+                                    <button className="btn" onClick={() => {modalDays.length != 0 ? timeModalRef.current?.showModal(): handleTimeChange()}}>Next</button>
                                 </form>
                             </div>
                         </div>
