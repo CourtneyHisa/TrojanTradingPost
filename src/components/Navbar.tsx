@@ -47,12 +47,9 @@ export default function Navbar() {
                             />
                         </svg>
                     </button>
-                    <button className="btn-ghost rounded-lg p-1 mx-1 w-12 h-12">
-                        
-                        
-                <ShoppingCart/>
-
-                    </button>
+                    
+                        <ShoppingCart />
+                    
                 </div>
             </div>
         </>
