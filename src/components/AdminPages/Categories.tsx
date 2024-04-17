@@ -18,7 +18,6 @@ export default function Categories() {
     const inputRef = useRef<HTMLInputElement>(null);
     const editRef = useRef<HTMLButtonElement>(null)
     const confirmRef = useRef<HTMLButtonElement>(null)
-
     // adding a category
     const addCategory = () => {
         if (inputValue.trim() !== '') {
@@ -33,7 +32,6 @@ export default function Categories() {
             setTextareaValue('');
         }
     };
-
     // removing a category
     const removeCategory = (category: string) => {
         setCategories(prevState => {
@@ -42,9 +40,9 @@ export default function Categories() {
             return newCategories;
         });
     };
-
     // edit a category
     const editCategory = (category: string) => {
+        const h2Element = document.getElementById(category);
         const inputRef = categories[category]?.inputRef;
         const editRef = categories[category]?.editRef;
         const confirmRef = categories[category]?.confirmRef;
@@ -57,8 +55,10 @@ export default function Categories() {
         if (confirmRef?.current) {
             confirmRef.current.style.display = ''
         } else return console.error("Confirm error editcategory")
+        if (h2Element) {
+            h2Element.style.display = 'none';
+        } else return console.error("description error editCategory")
     };
-
     // confirm edit a category description
     const confirmEditCategory = (category: string) => {
         const editInputValue = categories[category]!.inputRef.current?.value;
@@ -71,12 +71,11 @@ export default function Categories() {
         } else {
             console.error("Edit input value cannot be empty");
         }
-
         categories[category]!.inputRef.current!.style.display = 'none';
         categories[category]!.confirmRef.current!.style.display = 'none';
         categories[category]!.editRef.current!.style.display = '';
+        document.getElementById(category)!.style.display = ''
     };
-
     return (
         <>
             <div className="font-mhs mx-16">
@@ -93,11 +92,13 @@ export default function Categories() {
                         {Object.entries(categories).map(([category, { description, editRef, inputRef, confirmRef }], index) => (
                             <tr className="border-b-2  border-b-brown1" key={index}>
                                 <td className="text-center text-xl">{category}</td>
-                                <td className="text-xl px-2">{description}</td>
+                                <td className="text-xl px-2 ">
+                                    <h2 className="" id={category} style={{ display: "" }}>{description}</h2>
+                                    <input className="text-blue-700" ref={inputRef} style={{ display: "none" }} defaultValue={description} />
+                                </td>
                                 <td className="">
-                                    <button className='btn btn-circle' onClick={() => editCategory(category)} ref={editRef} style={{ display: "" }}>Edit</button>
-                                    <input ref={inputRef} style={{ display: "none" }}></input>
-                                    <button className='btn btn-circle' onClick={() => confirmEditCategory(category)} style={{ display: "none" }} ref={confirmRef}>Confirm Edit</button>
+                                    <button className='btn btn-circle ' onClick={() => editCategory(category)} ref={editRef} style={{ display: "" }}>Edit</button>
+                                    <button className='btn btn-circle bg-green-200 hover:bg-green-300 hover:border-green-400 border-green-200' onClick={() => confirmEditCategory(category)} style={{ display: "none" }} ref={confirmRef}>Save</button>
                                 </td>
                                 <td className="py-2">
                                     <button className="btn btn-error sm:btn-sm md:btn-md lg:btn-lg" onClick={() => removeCategory(category)}>
@@ -108,41 +109,36 @@ export default function Categories() {
                         ))}
                         <tr >
                             <td>
-                            <label className="form-control w-full max-w-xs">
-                    <input
-                        type="text"
-                        placeholder="Category name"
-                        className="input input-bordered w-full max-w-xs"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                    />
-                </label>
+                                <label className="form-control w-full max-w-xs">
+                                    <input
+                                        type="text"
+                                        placeholder="Category name"
+                                        className="input input-bordered w-full max-w-xs"
+                                        value={inputValue}
+                                        onChange={(e) => setInputValue(e.target.value)}
+                                    />
+                                </label>
                             </td>
                             <td>
-                            <label className="form-control">
-                    <textarea
-                        className="input input-bordered w-full m-2 p-2"
-                        placeholder="Description"
-                        value={textareaValue}
-                        onChange={(e) => setTextareaValue(e.target.value)}
-                    ></textarea>
-                </label>
+                                <label className="form-control">
+                                    <textarea
+                                        className="input input-bordered w-full m-2 p-2"
+                                        placeholder="Description"
+                                        value={textareaValue}
+                                        onChange={(e) => setTextareaValue(e.target.value)}
+                                    ></textarea>
+                                </label>
                             </td>
                             <td>
                             </td>
                             <td>
-                            <button className="btn" onClick={addCategory}>Add Category</button>
+                                <button className="btn" onClick={addCategory}>Add Category</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                
-            <div>
-                
-
-                
-            </div>
-
+                <div>
+                </div>
             </div>
         </>
     );
