@@ -7,12 +7,10 @@ interface Information {
     location: string;
     opening: {
         date: string[];
-        dayTime: {
-            day: string[];
-            time: string[][];
-        };
+        dayTime: {day: string, time: string[]}[];
     };
 }
+
 
 export default function Home() {
     const days: string[] = ["Monday", "Tuesday", "Wednsday", "Thursday", "Friday", "Saturday", "Sunday"]
@@ -23,20 +21,24 @@ export default function Home() {
         location: "95-1248 Meheula Pkwy, Mililani Town, Hawaii",
         opening: {
             date: ["November 17", "December 16"],
-            dayTime: {
-                day: ["Friday", "Saturday"],
-                time: [
-                    ["3PM", "8PM"],
-                    ["10AM", "8PM"],
-                ],
-            },
+            dayTime:
+                [
+                    {
+                        day: "Friday",
+                        time: ["3PM", "8PM"],
+                    },
+                    {
+                        day: "Saturday",
+                        time: ["10AM", "8PM"],
+                    }
+                ]
         },
     });
     const aboutRef = useRef<HTMLTextAreaElement>(null);
     const locationRef = useRef<HTMLInputElement>(null);
     const daysModalRef = useRef<HTMLDialogElement>(null);
     const timeModalRef = useRef<HTMLDialogElement>(null);
-    const [modalDays, setModalDays] = useState<string[]>(information.opening.dayTime.day);
+    const [modalDays, setModalDays] = useState<string[]>(information.opening.dayTime.map(cat => cat.day));
     const [startDatePicker, setStartDatePicker] = useState<Date>(new Date());
     const [endDatePicker, setEndDatePicker] = useState<Date>(new Date());
     const handleSubmit = () => {
@@ -77,18 +79,21 @@ export default function Home() {
         console.log(information);
     }
     const handleTimeChange = () => {
-        const newModalTimes: string[][] = [];
+        const newModalTimes: {day: string, time: string[]}[] = [];
+        
         modalDays.forEach(day => {
             const startTimeInput = document.getElementById(`${day}-start-time`) as HTMLInputElement;
             const endTimeInput = document.getElementById(`${day}-end-time`) as HTMLInputElement;
             if (startTimeInput && endTimeInput) {
-                newModalTimes.push([startTimeInput.value, endTimeInput.value]);
+                newModalTimes.push({
+                    day: day,
+                    time: [startTimeInput.value, endTimeInput.value]
+                });
             }
         });
         setInformation(prevState => {
             const prevInformation = { ...prevState }
-            prevInformation.opening.dayTime.day = modalDays;
-            prevInformation.opening.dayTime.time = newModalTimes;
+            prevInformation.opening.dayTime = newModalTimes;
             return prevInformation;
         })
     }
@@ -118,14 +123,8 @@ export default function Home() {
                             <p className="pb-2">
                                 {information.opening.date[0]} - {information.opening.date[1]}{" "}
                                 <br />
-                                {information.opening.dayTime.day.length == 0 ? "There is no set days ; time" : null}
-                                {information.opening.dayTime.day.length >= 1 ? (information.opening.dayTime.day[0] + ": " + information.opening.dayTime.time[0]?.join(" - ")) : null} <br />
-                                {information.opening.dayTime.day.length >= 2 ? (information.opening.dayTime.day[1] + ": " + information.opening.dayTime.time[1]?.join(" - ")) : null} <br />
-                                {information.opening.dayTime.day.length >= 3 ? (information.opening.dayTime.day[2] + ": " + information.opening.dayTime.time[2]?.join(" - ")) : null} <br />
-                                {information.opening.dayTime.day.length >= 4 ? (information.opening.dayTime.day[3] + ": " + information.opening.dayTime.time[3]?.join(" - ")) : null} <br />
-                                {information.opening.dayTime.day.length >= 5 ? (information.opening.dayTime.day[4] + ": " + information.opening.dayTime.time[4]?.join(" - ")) : null} <br />
-                                {information.opening.dayTime.day.length >= 6 ? (information.opening.dayTime.day[5] + ": " + information.opening.dayTime.time[5]?.join(" - ")) : null} <br />
-                                {information.opening.dayTime.day.length >= 7 ? (information.opening.dayTime.day[6] + ": " + information.opening.dayTime.time[6]?.join(" - ")) : null} <br />
+                                {information.opening.dayTime.length == 0 ? "There is no set days ; time" : information.opening.dayTime.map(day => (<>{day.day + ": " + day.time.join(" - ")} <br/></>))}
+                                
                             </p>
                         </div>
                     </div>
@@ -191,7 +190,7 @@ export default function Home() {
                             <div className="modal-action">
                                 <form method="dialog">
                                     {/* if there is a button in form, it will close the modal */}
-                                    <button className="btn" onClick={() => {modalDays.length != 0 ? timeModalRef.current?.showModal(): handleTimeChange()}}>Next</button>
+                                    <button className="btn" onClick={() => { modalDays.length != 0 ? timeModalRef.current?.showModal() : handleTimeChange() }}>Next</button>
                                 </form>
                             </div>
                         </div>
