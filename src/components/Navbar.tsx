@@ -1,10 +1,11 @@
 import Link from "next/link";
+import AdminLogin from "~/pages/adminLogin"
 import ShoppingCart from "~/components/shoppingCart"
 
 export default function Navbar() {
     return (
         <>
-            <div className="navbar flex h-24 w-screen bg-gray-300 border-b-4 border-gray-400 fixed top-0 z-10">
+            <div className="navbar flex h-24 w-screen bg-gray-300 border-b-4 border-gray-400 fixed top-0 z-10 ">
                 <div className="navbar-start pl-40 h-24 ">
                     <Link href="/landing" className="btn-ghost my-auto h-14 ">
                         <img src="TTPlogo.png" className="h-14">
@@ -31,7 +32,7 @@ export default function Navbar() {
                             />
                         </svg>
                     </button>
-                    <button className="btn-ghost rounded-lg p-1 mx-1">
+                    <Link href="/adminLogin" className="btn-ghost rounded-lg p-1 mx-1">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -46,10 +47,9 @@ export default function Navbar() {
                                 d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
                             />
                         </svg>
-                    </button>
+                    </Link>
                     
                         <ShoppingCart />
-                    
                 </div>
             </div>
         </>
