@@ -2,18 +2,22 @@ import React, { useRef, useState } from 'react';
 
 interface Category {
     description: string;
-    ref: React.MutableRefObject<HTMLInputElement | null>;
+    inputRef: React.MutableRefObject<HTMLInputElement | null>;
+    editRef: React.MutableRefObject<HTMLButtonElement | null>;
+    confirmRef: React.MutableRefObject<HTMLButtonElement | null>;
 }
 
 export default function Categories() {
     const [categories, setCategories] = useState<Record<string, Category>>({
-        "Red": { description: "It's red", ref: useRef<HTMLInputElement>(null) },
-        "Green": { description: "It's green", ref: useRef<HTMLInputElement>(null) },
-        "Blue": { description: "It's blue", ref: useRef<HTMLInputElement>(null) }
+        "Red": { description: "It's red", inputRef: useRef<HTMLInputElement>(null), editRef: useRef<HTMLButtonElement>(null), confirmRef: useRef<HTMLButtonElement>(null) },
+        "Green": { description: "It's green", inputRef: useRef<HTMLInputElement>(null), editRef: useRef<HTMLButtonElement>(null), confirmRef: useRef<HTMLButtonElement>(null) },
+        "Blue": { description: "It's blue", inputRef: useRef<HTMLInputElement>(null), editRef: useRef<HTMLButtonElement>(null), confirmRef: useRef<HTMLButtonElement>(null) }
     });
     const [inputValue, setInputValue] = useState('');
     const [textareaValue, setTextareaValue] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
+    const editRef = useRef<HTMLButtonElement>(null)
+    const confirmRef = useRef<HTMLButtonElement>(null)
 
     // adding a category
     const addCategory = () => {
@@ -22,7 +26,7 @@ export default function Categories() {
                 const newCategory = inputValue.trim();
                 return {
                     ...prevState,
-                    [newCategory]: { description: textareaValue.trim(), ref: inputRef }
+                    [newCategory]: { description: textareaValue.trim(), inputRef: inputRef, editRef: editRef, confirmRef: confirmRef }
                 };
             });
             setInputValue('');
@@ -41,15 +45,23 @@ export default function Categories() {
 
     // edit a category
     const editCategory = (category: string) => {
-        const inputRef = categories[category]!.ref;
-        if (inputRef.current) {
+        const inputRef = categories[category]?.inputRef;
+        const editRef = categories[category]?.editRef;
+        const confirmRef = categories[category]?.confirmRef;
+        if (inputRef?.current) {
             inputRef.current.style.display = '';
-        }
+        } else return console.error("Input error editCategory")
+        if (editRef?.current) {
+            editRef.current.style.display = 'none';
+        } else return console.error("Edit error editcategory")
+        if (confirmRef?.current) {
+            confirmRef.current.style.display = ''
+        } else return console.error("Confirm error editcategory")
     };
 
     // confirm edit a category description
     const confirmEditCategory = (category: string) => {
-        const editInputValue = categories[category]!.ref.current?.value;
+        const editInputValue = categories[category]!.inputRef.current?.value;
         if (editInputValue && editInputValue.trim() !== '') {
             setCategories(prevState => {
                 const newCategories = { ...prevState };
@@ -60,70 +72,77 @@ export default function Categories() {
             console.error("Edit input value cannot be empty");
         }
 
-        categories[category]!.ref.current!.style.display = 'none';
+        categories[category]!.inputRef.current!.style.display = 'none';
+        categories[category]!.confirmRef.current!.style.display = 'none';
+        categories[category]!.editRef.current!.style.display = '';
     };
 
     return (
         <>
-            <div>
-                <h2>Categories</h2>
-            </div>
-            <div>
-                <label className="form-control w-full max-w-xs">
-                    <div className="label">
-                        <span className="label-text">What would the name of the Category be?</span>
-                    </div>
-                    <input
-                        type="text"
-                        placeholder="Type here"
-                        className="input input-bordered w-full max-w-xs"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                    />
-                </label>
-                <label className="form-control">
-                    <div className="label">
-                        <span className="label-text">Description</span>
-                    </div>
-                    <textarea
-                        className="textarea textarea-bordered h-24"
-                        placeholder="Type Here"
-                        value={textareaValue}
-                        onChange={(e) => setTextareaValue(e.target.value)}
-                    ></textarea>
-                    <div className="label"></div>
-                </label>
-                <button className="btn" onClick={addCategory}>Add Category</button>
-            </div>
-            <div>
-                <table className="table table-xs">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th></th>
-                            <th></th>
+            <div className="font-mhs mx-16">
+                <table className="w-full divide-y-4 divide-brown1">
+                    <thead className="text-4xl ">
+                        <tr className="w-full">
+                            <th className="w-1/6">Name</th>
+                            <th className="w-1/2">Description</th>
+                            <th className="">Edit</th>
+                            <th className=""></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {Object.entries(categories).map(([category, { description, ref }], index) => (
-                            <tr key={index}>
-                                <td>{category}</td>
-                                <td>{description}</td>
-                                <td>
-                                    <button className='btn btn-circle' onClick={() => editCategory(category)}>Edit</button>
-                                    <input ref={ref} style={{ display: "none" }}></input>
-                                    <button className='btn btn-circle' onClick={() => confirmEditCategory(category)}>Confirm Edit</button>
+                    <tbody className="">
+                        {Object.entries(categories).map(([category, { description, editRef, inputRef, confirmRef }], index) => (
+                            <tr className="border-b-2  border-b-brown1" key={index}>
+                                <td className="text-center text-xl">{category}</td>
+                                <td className="text-xl px-2">{description}</td>
+                                <td className="">
+                                    <button className='btn btn-circle' onClick={() => editCategory(category)} ref={editRef} style={{ display: "" }}>Edit</button>
+                                    <input ref={inputRef} style={{ display: "none" }}></input>
+                                    <button className='btn btn-circle' onClick={() => confirmEditCategory(category)} style={{ display: "none" }} ref={confirmRef}>Confirm Edit</button>
                                 </td>
-                                <td>
-                                    <button className="btn btn-circle" onClick={() => removeCategory(category)}>
+                                <td className="py-2">
+                                    <button className="btn btn-error sm:btn-sm md:btn-md lg:btn-lg" onClick={() => removeCategory(category)}>
                                         Delete
                                     </button>
                                 </td>
                             </tr>
                         ))}
+                        <tr >
+                            <td>
+                            <label className="form-control w-full max-w-xs">
+                    <input
+                        type="text"
+                        placeholder="Category name"
+                        className="input input-bordered w-full max-w-xs"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                    />
+                </label>
+                            </td>
+                            <td>
+                            <label className="form-control">
+                    <textarea
+                        className="input input-bordered w-full m-2 p-2"
+                        placeholder="Description"
+                        value={textareaValue}
+                        onChange={(e) => setTextareaValue(e.target.value)}
+                    ></textarea>
+                </label>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            <button className="btn" onClick={addCategory}>Add Category</button>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
+                
+            <div>
+                
+
+                
+            </div>
+
             </div>
         </>
     );

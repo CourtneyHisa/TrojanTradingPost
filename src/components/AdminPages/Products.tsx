@@ -21,8 +21,6 @@ export default function Products() {
         { id: 2, name: 'Green', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], restock_date: new Date(), ref: useRef<HTMLDialogElement>(null) },
         { id: 3, name: 'Blue', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], restock_date: new Date(), ref: useRef<HTMLDialogElement>(null) },
     ]);
-    const [editableIndex, setEditableIndex] = useState<number>(-1);
-    const [editedPrice, setEditedPrice] = useState<string>('');
     const [showImage, setShowImage] = useState(false);
 
     const handleImageClick = () => {
@@ -50,20 +48,6 @@ export default function Products() {
         updatedItems[index]!.category = updatedItems[index]!.selectedCategories; // Update category based on selectedCategories
         setItems(updatedItems);
         items[index]?.ref.current?.close()
-    };
-
-    const handleEdit = (index: number): void => {
-        setEditableIndex(index);
-        setEditedPrice(items[index]!.price.toString());
-    };
-
-    const handleConfirmEdit = (index: number): void => {
-        if (editedPrice !== '') {
-            const updatedItems: Item[] = [...items];
-            updatedItems[index]!.price = parseFloat(editedPrice);
-            setItems(updatedItems);
-            setEditableIndex(-1);
-        }
     };
 
     const newDate = (index: number, date: Date) => {
