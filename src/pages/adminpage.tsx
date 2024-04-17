@@ -43,7 +43,7 @@ export default function AdminPage() {
     return (
 
         <>
-            <div className="navbar bg-cream1 border-b-4 border-brown1 fixed top-0 px-24">
+            <div className="navbar bg-cream1 border-b-4 border-brown1 top-0 px-24">
                 <ul className="text-2xl text-brown2 lg:text-4xl menu menu-horizontal w-full rounded-box justify-between">
                     <li id='home' onClick={switchPage}><a>Home</a></li>
                     <li id='products' onClick={switchPage}><a>Products</a></li>
