@@ -61,7 +61,7 @@ export default function Products() {
 
     return (
         <>
-            <div className="overflow-x-auto relative h-screen pt-10 font-mhs">
+            <div className="overflow-x-auto relative h-screen font-mhs">
                 <table className="w-full">
                     <thead className="text-left">
                         <tr className="border-b-2">

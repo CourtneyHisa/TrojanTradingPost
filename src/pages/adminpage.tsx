@@ -52,6 +52,8 @@ export default function AdminPage() {
                     <li id='edit' onClick={switchPage}><a>Edit</a></li>
                 </ul>
             </div>
+            <div id="main" ref={mainRef} className="my-8">
+                <Home />
             </div>
         </>
     )
