@@ -2,40 +2,61 @@ import { z } from "zod";
 import axios from "axios";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { API_BASE, AUTH, type LVItemsWrapper, type Item, type Inventory, Variant, VariantLinkedItem, VaritStock, LVCategoriesWrapper } from "~/utils/loyverse";
-import { Prisma } from "@prisma/client";
-import { db } from "~/server/db";
+import { API_BASE, AUTH, type LVItem, type LVInventory, type LVVariant, type VaritStock, type LVCategory } from "~/utils/loyverse";
+import { type Reservation, type Item } from "@prisma/client";
 
 export const mongoRouter = createTRPCRouter({
   getItemByLoyverseVariantId: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
-      let mongoData = await ctx.db.item.findFirst({
+      const mongoData = await ctx.db.item.findFirst({
         where: {
           loyverseVariantID: input.id,
         },
       });
 
-      const { data: loyverseVariant }: { data: Variant; } = await axios.get(API_BASE + "/variants/" + input.id, {
+      const reservations = await ctx.db.reservation.findMany({
+        where: {
+          itemId: input.id
+        }
+      })
+
+      const { data: lvVariant }: { data: LVVariant; } = await axios.get(API_BASE + "/variants/" + input.id, {
         headers: {
           'Authorization': AUTH
         }
       });
 
-      const { data: loyverseItem }: { data: Item; } = await axios.get(API_BASE + "/items/" + input.id, {
+      const { data: lvItem }: { data: LVItem; } = await axios.get(API_BASE + "/items/" + lvVariant.item_id, {
         headers: {
           'Authorization': AUTH
         }
       });
 
-      let returnedItem = {
-        loyverseItemId: loyverseVariant.item_id,
-        loyverseVariantId: loyverseVariant.variant_id,
-        name: loyverseItem.item_name,
+      const { data: lvCategory }: { data: LVCategory; } = await axios.get(API_BASE + "/categories/" + lvItem.category_id, {
+        headers: {
+          'Authorization': AUTH
+        }
+      });
 
+      const lvInventory = ((await axios.get(API_BASE + "/inventory?variant_ids=" + encodeURI(lvVariant.variant_id), {
+        headers: {
+          'Authorization': AUTH
+        }
+      })).data as LVInventory).inventory_levels[0]!;
+
+      const variant: VaritStock & { reservations: Reservation[], mongoDB: Item | null } = {
+        ...lvVariant,
+        item: lvItem,
+        category: lvCategory,
+        in_stock: lvInventory.in_stock,
+        last_restock: new Date(lvInventory.updated_at),
+
+        reservations,
+        mongoDB: mongoData
       }
-      
 
+      return variant;
 
     }),
 

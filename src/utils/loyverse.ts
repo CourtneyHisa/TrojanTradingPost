@@ -13,29 +13,32 @@ export type CleanItem = {
     name: string,
 };
 
+export type VariantLinkedItem = LVVariant & {item: LVItem};
+export type VaritStock = VariantLinkedItem & { in_stock: number; last_restock: Date; category?: LVCategory; };
+
 // works but confusing syntax
 // export type LVWrapper<T, Plural extends string> = {
 //     [key in Plural]: T[];
 // } & { cursor?: string; };
 
+// when you call stuff loyverse gives it back with a cursor key used for pagination (so you dont have to call 1000 items in 1 rq but maybe 10 items in 100 rqs)
+// LOYVERSE WRAPPERS
 export type LVWrapper = {
     cursor?: string;
 };
 
 export type LVItemsWrapper = {
-    items: Item[];
+    items: LVItem[];
 } & LVWrapper;
 
 export type LVCategoriesWrapper = {
-    categories: Category[];
+    categories: LVCategory[];
 } & LVWrapper;
 
 export type LVVariantsWrapper = {
-    variants: Variant[];
+    variants: LVVariant[];
 } & LVWrapper;
 
-export type VariantLinkedItem = Variant & {item: Item};
-export type VaritStock = VariantLinkedItem & { in_stock: number; last_restock: Date; category?: Category; };
 // RAW TYPES FROM COPYING LOYVERSE DOCS
 // may be inaccurate, assume all properties are nullish ( type | null )
 export type VariantStore = {
@@ -47,7 +50,7 @@ export type VariantStore = {
     low_stock: null | number;
 };
 
-export type Category = {
+export type LVCategory = {
     id: string;
     name: string;
     color: string | null;
@@ -55,7 +58,7 @@ export type Category = {
     deleted_at: string | null;
 };
 
-export type Variant = {
+export type LVVariant = {
     variant_id: UUID;
     item_id: UUID;
     sku: string;
@@ -77,7 +80,7 @@ export type Variant = {
 export type Shape = "SQUARE" | "CIRCLE" | "SUN" | "OCTAGON";
 export type Color = "GREY" | "RED" | "PINK" | "ORANGE" | "YELLOW" | "GREEN" | "BLUE" | "PURPLE";
 
-export type Component = {
+export type LVComponent = {
     variant_id: UUID;
     quantity: number;
 };
@@ -90,7 +93,7 @@ export type Component = {
  * When an item has multiple variants, each variant will NOT have a
  * different description and different image.
  */
-export type Item = {
+export type LVItem = {
     id: UUID;
     handle: string;
     item_name: string;
@@ -101,7 +104,7 @@ export type Item = {
     sold_by_weight: boolean;
     is_composite: boolean;
     use_production: boolean;
-    components: Component[];
+    components: LVComponent[];
     primary_supplier_id: UUID | null;
     tax_ids: [
         UUID,
@@ -120,10 +123,10 @@ export type Item = {
     created_at: string | null;
     updated_at: string | null;
     deleted_at: string | null;
-    variants: Variant[];
+    variants: LVVariant[];
 };
 
-export type Inventory = {
+export type LVInventory = {
     inventory_levels: {
         variant_id: string;
         store_id: string;
@@ -133,7 +136,7 @@ export type Inventory = {
     cursor: string;
 };
 
-export type Customer = {
+export type LVCustomer = {
     id: string;
     name: string;
     email: string;

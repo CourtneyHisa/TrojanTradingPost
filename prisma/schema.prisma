@@ -14,6 +14,8 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+// TODO: rename all instances of 'item' to variant to avoid confusion between the two platforms
+// not an actual loyverse item, is a variant
 model Item {
     id                String        @id @default(auto()) @map("_id") @db.ObjectId
     restockDate       String?
@@ -27,6 +29,7 @@ model Item {
 model Reservation {
     id     String @id @default(auto()) @map("_id") @db.ObjectId
     item   Item   @relation(fields: [itemId], references: [id])
+    // assuming this is intended to be a variant
     itemId String @db.ObjectId
     user   User   @relation(fields: [userId], references: [id])
     userId String @db.ObjectId

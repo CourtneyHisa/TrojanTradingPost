@@ -2,7 +2,7 @@ import { z } from "zod";
 import axios from "axios";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { API_BASE, AUTH, type LVItemsWrapper, type Item, type Inventory, Variant, VariantLinkedItem, VaritStock, LVCategoriesWrapper } from "~/utils/loyverse";
+import { API_BASE, AUTH, type LVItemsWrapper, type LVItem, type LVInventory, LVVariant, VariantLinkedItem, VaritStock, LVCategoriesWrapper } from "~/utils/loyverse";
 import { TRPCError } from "@trpc/server";
 
 // interface with loyverse
@@ -26,7 +26,7 @@ export const lvRouter = createTRPCRouter({
         }
       });
 
-      const { data: inventory }: { data: Inventory; } = await axios.get(API_BASE + "/inventory", {
+      const { data: inventory }: { data: LVInventory; } = await axios.get(API_BASE + "/inventory", {
         headers: {
           'Authorization': AUTH
         }
@@ -79,7 +79,7 @@ export const lvRouter = createTRPCRouter({
   getItemById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async({ input }) => {
-      const { data }: { data: Item; } = await axios.get(API_BASE + "/items/" + input.id, {
+      const { data }: { data: LVItem; } = await axios.get(API_BASE + "/items/" + input.id, {
         headers: {
           'Authorization': AUTH
         }
@@ -88,7 +88,7 @@ export const lvRouter = createTRPCRouter({
     }),
   getInventory: publicProcedure
     .query(async () => {
-      const { data }: { data: Inventory; } = await axios.get(API_BASE + "/inventory", {
+      const { data }: { data: LVInventory; } = await axios.get(API_BASE + "/inventory", {
         headers: {
           'Authorization': AUTH
         }
