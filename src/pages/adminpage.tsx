@@ -5,6 +5,7 @@ import Home from '~/components/AdminPages/Home';
 import Products from '~/components/AdminPages/Products';
 import Users from '~/components/AdminPages/Users';
 import Categories from '~/components/AdminPages/Categories';
+import Edit from '~/components/AdminPages/Edit';
 
 export default function AdminPage() {
     const mainRef = useRef<HTMLDivElement>(null);
@@ -33,7 +34,7 @@ export default function AdminPage() {
                     selectedMenuItem === 'products' ? <Products /> :
                         selectedMenuItem === 'users' ? <Users /> :
                             selectedMenuItem === 'catagories' ? <Categories /> :
-                                null
+                                selectedMenuItem === 'edit' ? <Edit/> : null
             );
         } else {
             main?.innerHTML == ''; // Clear the main div if no menu item is selected
