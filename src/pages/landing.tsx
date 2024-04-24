@@ -1,10 +1,13 @@
-import Link from "next/link";
 import Navbar from "~/components/Navbar";
 import Footer from "~/components/Footer";
 
 import PictureRotation from "~/components/pictureRotation"
 import ItemCard from "~/components/ItemCard";
+import { api } from "~/utils/api";
 export default function Landing() {
+
+    const items = api.loyverse.getCleanVariants.useQuery();
+
     return (
         <>
             <Navbar />
@@ -35,8 +38,8 @@ export default function Landing() {
                     </div>
                 </div>
                 <div className='pb-8'>
-                    <h1 className="text-center text-4xl font-bold text-brown2 pt-6 pb-4">Popular Items!</h1>
-                    <ItemCard />
+                    <h1 className="text-center text-4xl font-bold text-brown2 pt-6 pb-4">Popular Items!</h1>                
+                    {!(items.isFetched && items.data) ? <div>Loading</div> : <ItemCard variants={items.data}/>}
                 </div>
             </div>
             <Footer />
