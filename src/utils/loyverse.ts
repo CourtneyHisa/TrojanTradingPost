@@ -41,7 +41,7 @@ export type LVVariantsWrapper = {
 
 // RAW TYPES FROM COPYING LOYVERSE DOCS
 // may be inaccurate, assume all properties are nullish ( type | null )
-export type VariantStore = {
+export type LVVariantStore = {
     store_id: string;
     pricing_type: string;
     price: null | number;
@@ -71,7 +71,7 @@ export type LVVariant = {
     purchase_cost: number | null;
     default_pricing_type: string;
     default_price: number | null;
-    stores: VariantStore[];
+    stores: LVVariantStore[];
     created_at: string | null;
     updated_at: string | null;
     deleted_at: string | null;

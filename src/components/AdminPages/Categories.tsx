@@ -18,7 +18,6 @@ export default function Categories() {
     const inputRef = useRef<HTMLInputElement>(null);
     const editRef = useRef<HTMLButtonElement>(null)
     const confirmRef = useRef<HTMLButtonElement>(null)
-
     // adding a category
     const addCategory = () => {
         if (inputValue.trim() !== '') {
@@ -33,7 +32,6 @@ export default function Categories() {
             setTextareaValue('');
         }
     };
-
     // removing a category
     const removeCategory = (category: string) => {
         setCategories(prevState => {
@@ -42,23 +40,25 @@ export default function Categories() {
             return newCategories;
         });
     };
-
     // edit a category
     const editCategory = (category: string) => {
-        const inputRef = categories[category]!.inputRef;
-        const editRef = categories[category]!.editRef;
-        const confirmRef = categories[category]!.confirmRef;
-        if (inputRef.current) {
+        const h2Element = document.getElementById(category);
+        const inputRef = categories[category]?.inputRef;
+        const editRef = categories[category]?.editRef;
+        const confirmRef = categories[category]?.confirmRef;
+        if (inputRef?.current) {
             inputRef.current.style.display = '';
-        }
-        if (editRef.current) {
+        } else return console.error("Input error editCategory")
+        if (editRef?.current) {
             editRef.current.style.display = 'none';
-        }
-        if (confirmRef.current) {
+        } else return console.error("Edit error editcategory")
+        if (confirmRef?.current) {
             confirmRef.current.style.display = ''
-        }
+        } else return console.error("Confirm error editcategory")
+        if (h2Element) {
+            h2Element.style.display = 'none';
+        } else return console.error("description error editCategory")
     };
-
     // confirm edit a category description
     const confirmEditCategory = (category: string) => {
         const editInputValue = categories[category]!.inputRef.current?.value;
@@ -71,73 +71,74 @@ export default function Categories() {
         } else {
             console.error("Edit input value cannot be empty");
         }
-
         categories[category]!.inputRef.current!.style.display = 'none';
         categories[category]!.confirmRef.current!.style.display = 'none';
         categories[category]!.editRef.current!.style.display = '';
+        document.getElementById(category)!.style.display = ''
     };
-
     return (
         <>
-            <div>
-                <h2>Categories</h2>
-            </div>
-            <div>
-                <label className="form-control w-full max-w-xs">
-                    <div className="label">
-                        <span className="label-text">What would the name of the Category be?</span>
-                    </div>
-                    <input
-                        type="text"
-                        placeholder="Type here"
-                        className="input input-bordered w-full max-w-xs"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                    />
-                </label>
-                <label className="form-control">
-                    <div className="label">
-                        <span className="label-text">Description</span>
-                    </div>
-                    <textarea
-                        className="textarea textarea-bordered h-24"
-                        placeholder="Type Here"
-                        value={textareaValue}
-                        onChange={(e) => setTextareaValue(e.target.value)}
-                    ></textarea>
-                    <div className="label"></div>
-                </label>
-                <button className="btn" onClick={addCategory}>Add Category</button>
-            </div>
-            <div>
-                <table className="table table-xs">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th></th>
-                            <th></th>
+            <div className="font-mhs mx-16">
+                <table className="w-full divide-y-4 divide-brown1">
+                    <thead className="text-4xl ">
+                        <tr className="w-full">
+                            <th className="w-1/6">Name</th>
+                            <th className="w-1/2">Description</th>
+                            <th className="">Edit</th>
+                            <th className=""></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {Object.entries(categories).map(([category, { description, inputRef, editRef, confirmRef }], index) => (
-                            <tr key={index}>
-                                <td>{category}</td>
-                                <td>{description}</td>
-                                <td>
-                                    <button className='btn btn-circle' onClick={() => editCategory(category)} ref={editRef} style={{ display: "" }}>Edit</button>
-                                    <input ref={inputRef} style={{ display: "none" }}></input>
-                                    <button className='btn btn-circle' onClick={() => confirmEditCategory(category)} style={{ display: "none" }} ref={confirmRef}>Confirm Edit</button>
+                    <tbody className="">
+                        {Object.entries(categories).map(([category, { description, editRef, inputRef, confirmRef }], index) => (
+                            <tr className="border-b-2  border-b-brown1" key={index}>
+                                <td className="text-center text-xl">{category}</td>
+                                <td className="text-xl px-2 ">
+                                    <h2 className="" id={category} style={{ display: "" }}>{description}</h2>
+                                    <input className="text-blue-700" ref={inputRef} style={{ display: "none" }} defaultValue={description} />
                                 </td>
-                                <td>
-                                    <button className="btn btn-circle" onClick={() => removeCategory(category)}>
+                                <td className="">
+                                    <button className='btn btn-circle ' onClick={() => editCategory(category)} ref={editRef} style={{ display: "" }}>Edit</button>
+                                    <button className='btn btn-circle bg-green-200 hover:bg-green-300 hover:border-green-400 border-green-200' onClick={() => confirmEditCategory(category)} style={{ display: "none" }} ref={confirmRef}>Save</button>
+                                </td>
+                                <td className="py-2">
+                                    <button className="btn btn-error sm:btn-sm md:btn-md lg:btn-lg" onClick={() => removeCategory(category)}>
                                         Delete
                                     </button>
                                 </td>
                             </tr>
                         ))}
+                        <tr >
+                            <td>
+                                <label className="form-control w-full max-w-xs">
+                                    <input
+                                        type="text"
+                                        placeholder="Category name"
+                                        className="input input-bordered w-full max-w-xs"
+                                        value={inputValue}
+                                        onChange={(e) => setInputValue(e.target.value)}
+                                    />
+                                </label>
+                            </td>
+                            <td>
+                                <label className="form-control">
+                                    <textarea
+                                        className="input input-bordered w-full m-2 p-2"
+                                        placeholder="Description"
+                                        value={textareaValue}
+                                        onChange={(e) => setTextareaValue(e.target.value)}
+                                    ></textarea>
+                                </label>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                <button className="btn" onClick={addCategory}>Add Category</button>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
+                <div>
+                </div>
             </div>
         </>
     );
