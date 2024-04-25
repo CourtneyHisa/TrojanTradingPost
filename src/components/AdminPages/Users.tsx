@@ -21,6 +21,7 @@ export default function Users() {
     ]);
 
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const [emailSelected, setEmailSelected] = useState<string | null>(null)
 
     const handleViewReservations = (user: User) => {
         setSelectedUser(user);
@@ -30,8 +31,22 @@ export default function Users() {
         setSelectedUser(null);
     };
 
+    const showEmailBlast = () => {
+        const selected = document.getElementsByClassName("checkbox")
+        for (let i=0;i<selected.length;i++) {
+            const checking = selected.item(i) as HTMLInputElement
+        }
+    }
+
+    const handleEmailBlast = () => {
+        null
+    };
+
     return (
         <>
+            <div>
+                <button className="btn" onClick={showEmailBlast}>Email Blast</button>
+            </div>
             <div className="overflow-x-auto" style={{ height: "100vh" }}>
                 {selectedUser ? (
                     <div>
@@ -83,6 +98,9 @@ export default function Users() {
                                     ) : (
                                         <td>No Reserves</td>
                                     )}
+                                    <td>
+                                        <input type="checkbox" className="checkbox" onChange={handleEmailBlast} />
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
