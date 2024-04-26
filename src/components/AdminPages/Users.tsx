@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 interface User {
     id: number;
@@ -19,38 +19,46 @@ export default function Users() {
         },
         { id: 2, email: "shishi@shi.shi", phone: 8087654321, name: "tim", reserved: null },
     ]);
-
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
-    const [emailSelected, setEmailSelected] = useState<string | null>(null)
-
-    const handleViewReservations = (user: User) => {
-        setSelectedUser(user);
-    };
-
-    const handleGoBack = () => {
-        setSelectedUser(null);
-    };
-
+    const emailModal = useRef<HTMLDialogElement>(null)
+    const emailModalText = useRef<HTMLTextAreaElement>(null)
+    const [emailText, setEmailText] = useState<string>("")
+    const [emailSelected, setEmailSelected] = useState<string[]>([])
     const showEmailBlast = () => {
-        const selected = document.getElementsByClassName("checkbox")
-        for (let i=0;i<selected.length;i++) {
-            const checking = selected.item(i) as HTMLInputElement
-        }
-    }
-
-    const handleEmailBlast = () => {
         null
-    };
+    }
 
     return (
         <>
             <div>
-                <button className="btn" onClick={showEmailBlast}>Email Blast</button>
+                {emailSelected.length != 0 ? (
+                    <>
+                        <button className="btn" onClick={() => emailModal.current?.showModal()}>Email Blast</button>
+                        <dialog id="my_modal_4" className="modal" ref={emailModal}>
+                            <div className="modal-box w-11/12 max-w-5xl">
+                                <h3 className="font-bold text-lg">Email Blasting</h3>
+                                <p className="py-4">Sending to {emailSelected.join(", ")}</p>
+                                <textarea
+                                    placeholder="Type Here"
+                                    ref={emailModalText}
+                                    onChange={cat => setEmailText(cat.target.value)}
+                                    className="textarea textarea-bordered"
+                                ></textarea>
+                                <div className="modal-action">
+                                    <form method="dialog">
+                                        {/* if there is a button, it will close the modal */}
+                                        <button className="btn">Send</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </dialog>
+                    </>
+                ) : (<button className="btn" disabled>Email Blast</button>)}
             </div>
             <div className="overflow-x-auto" style={{ height: "100vh" }}>
                 {selectedUser ? (
                     <div>
-                        <button onClick={handleGoBack}>Go Back</button>
+                        <button onClick={() => setSelectedUser(null)}>Go Back</button>
                         <table className="table table-xs">
                             <thead>
                                 <tr>
@@ -93,19 +101,20 @@ export default function Users() {
                                     <td>{user.phone}</td>
                                     {user.reserved ? (
                                         <td>
-                                            <button onClick={() => handleViewReservations(user)}>View Reservations</button>
+                                            <button onClick={() => setSelectedUser(user)}>View Reservations</button>
                                         </td>
                                     ) : (
                                         <td>No Reserves</td>
                                     )}
                                     <td>
-                                        <input type="checkbox" className="checkbox" onChange={handleEmailBlast} />
+                                        <input type="checkbox" className="checkbox" onChange={() => setEmailSelected(prevState => [...prevState, user.email])} />
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 )}
+
             </div>
         </>
     );
