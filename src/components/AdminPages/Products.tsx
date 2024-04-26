@@ -14,21 +14,53 @@ interface Item {
     ref: React.MutableRefObject<HTMLDialogElement | null>;
 }
 
+interface Category {
+    inputRef: React.MutableRefObject<HTMLInputElement | null>;
+    editRef: React.MutableRefObject<HTMLButtonElement | null>;
+    confirmRef: React.MutableRefObject<HTMLButtonElement | null>;
+}
+
 export default function Products() {
-    const categories = ["Red", "Green", "Blue", "Long ass example category just to visualize asdfghjkl;f afsdvba bfawbvbasvjhZSDjb"];
+    const [categories, setCategories] = useState<Record<string, Category>>({
+        "Red": { inputRef: useRef<HTMLInputElement>(null), editRef: useRef<HTMLButtonElement>(null), confirmRef: useRef<HTMLButtonElement>(null) },
+        "Green": { inputRef: useRef<HTMLInputElement>(null), editRef: useRef<HTMLButtonElement>(null), confirmRef: useRef<HTMLButtonElement>(null) },
+        "Blue": { inputRef: useRef<HTMLInputElement>(null), editRef: useRef<HTMLButtonElement>(null), confirmRef: useRef<HTMLButtonElement>(null) }
+    });
     const [items, setItems] = useState<Item[]>([
         { id: 1, name: 'Red', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], restock_date: new Date(), ref: useRef<HTMLDialogElement>(null) },
         { id: 2, name: 'Green', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], restock_date: new Date(), ref: useRef<HTMLDialogElement>(null) },
         { id: 3, name: 'Blue', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], restock_date: new Date(), ref: useRef<HTMLDialogElement>(null) },
     ]);
-    const [showImage, setShowImage] = useState(false);
-
-    const handleImageClick = () => {
-        setShowImage(false);
+    const [inputValue, setInputValue] = useState('');
+    const [textareaValue, setTextareaValue] = useState('');
+    const inputRef = useRef<HTMLInputElement>(null);
+    const editRef = useRef<HTMLButtonElement>(null)
+    const confirmRef = useRef<HTMLButtonElement>(null)
+    const editCategory = useRef<HTMLDialogElement>(null)
+    // adding a category
+    const addCategory = () => {
+        if (inputValue.trim() !== '') {
+            setCategories(prevState => {
+                const newCategory = inputValue.trim();
+                return {
+                    ...prevState,
+                    [newCategory]: { description: textareaValue.trim(), inputRef: inputRef, editRef: editRef, confirmRef: confirmRef }
+                };
+            });
+            setInputValue('');
+            setTextareaValue('');
+        }
     };
-
+    // removing a category
+    const removeCategory = (category: string) => {
+        setCategories(prevState => {
+            const newCategories = { ...prevState };
+            delete newCategories[category];
+            return newCategories;
+        });
+    };
     const handleButtonClick = () => {
-        setShowImage(true);
+        null
     };
 
     const handleCategoryChange = (category: string, index: number) => {
@@ -59,8 +91,83 @@ export default function Products() {
         }
     }
 
+    const handleEditCategory = (category: string) => {
+        const h2Element = document.getElementById(category);
+        const inputRef = categories[category]?.inputRef;
+        const editRef = categories[category]?.editRef;
+        const confirmRef = categories[category]?.confirmRef;
+        if (inputRef?.current) {
+            inputRef.current.style.display = '';
+        } else return console.error("Input error editCategory")
+        if (editRef?.current) {
+            editRef.current.style.display = 'none';
+        } else return console.error("Edit error editcategory")
+        if (confirmRef?.current) {
+            confirmRef.current.style.display = ''
+        } else return console.error("Confirm error editcategory")
+        if (h2Element) {
+            h2Element.style.display = 'none';
+        } else return console.error("description error editCategory")
+    };
+
+    const handleCategoryEdit = (category: string) => {
+        const editInputValue = categories[category]!.inputRef.current?.value;
+        if (editInputValue && editInputValue.trim() !== '') {
+            setCategories(prevState => {
+                const newCategories = { ...prevState };
+                // newCategories[category] = editInputValue.trim();
+                return newCategories;
+            });
+        } else {
+            console.error("Edit input value cannot be empty");
+        }
+        categories[category]!.inputRef.current!.style.display = 'none';
+        categories[category]!.confirmRef.current!.style.display = 'none';
+        categories[category]!.editRef.current!.style.display = '';
+        document.getElementById(category)!.style.display = ''
+    }
+
     return (
         <>
+            <div>
+                <dialog className="modal" ref={editCategory}>
+                    <div className="mockup-window border bg-base-300">
+                        <div className="flex px-96 py-64 bg-base-200 ">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Edit</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <thead>
+                                    {Object.entries(categories).map(([category, { editRef, inputRef, confirmRef }], index) => (
+                                        <tr className="border-b-2  border-b-brown1" key={index}>
+                                            <td className="text-center text-xl">
+                                                <h2 className="" id={category} style={{ display: "" }}>{category}</h2>
+                                                <input className="text-blue-700" ref={inputRef} style={{ display: "none" }} defaultValue={category} />
+                                            </td>
+                                            <td className="">
+                                                <button className='btn btn-circle ' onClick={() => handleEditCategory(category)} ref={editRef} style={{ display: "" }}>Edit</button>
+                                                <button className='btn btn-circle bg-green-200 hover:bg-green-300 hover:border-green-400 border-green-200' onClick={() => handleCategoryEdit(category)} style={{ display: "none" }} ref={confirmRef}>Save</button>
+                                            </td>
+                                            <td className="py-2">
+                                                <button className="btn btn-error sm:btn-sm md:btn-md lg:btn-lg" onClick={() => removeCategory(category)}>
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </thead>
+                            </table>
+                        </div>
+                        <div className="modal-action">
+                            <button className="btn">Save</button>
+                        </div>
+                    </div>
+                </dialog>
+            </div>
             <div className="overflow-x-auto relative h-screen font-mhs">
                 <table className="w-full">
                     <thead className="text-left">
@@ -70,7 +177,7 @@ export default function Products() {
                             <th className='w-1/12'>Price</th>
                             <th className='w-1/12'>In-Stock</th>
                             <th className='w-1/12'>Image</th>
-                            <th className='w-3/12'>Categories</th>
+                            <th className='w-3/12'>Categories <button className='px-2 text-blue-500 -mr-28' onClick={() => editCategory.current?.showModal()}>Edit</button></th>
                             <th className='w-1/12 pr-16'>Restock</th>
                         </tr>
                     </thead>
@@ -104,7 +211,7 @@ export default function Products() {
                                         <div className="modal-box">
                                             <h3 className="font-bold text-lg">Choose Categories</h3>
                                             <div className="form-control">
-                                                {categories.map(category => (
+                                                {Object.entries(categories).map(([category], index) => (
                                                     <label className="label cursor-pointer" key={category}>
                                                         <span className="label-text">{category}</span>
                                                         <input type="checkbox" className="checkbox" checked={item.selectedCategories.includes(category)} onChange={() => handleCategoryChange(category, index)} />
