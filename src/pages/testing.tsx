@@ -1,20 +1,18 @@
-import ItemCard from "~/components/ItemCard"
 import { useCallback, useState } from "react";
 import Navbar from "~/components/Navbar";
 import Sidebar from "~/components/Sidebar";
 import Footer from "~/components/Footer";
+import { api } from "~/utils/api";
 
 
 export default function product() {
 
-    const [layout, setLayout] = useState(0);
-    const nextLayout = useCallback(() => setLayout(state => state+1), setLayout)
-    const itemLayout = "column-" + layout.toString()
+    const x = api.mongo.getItemByLoyverseVariantId.useQuery({ id: "xxxx" });
     return (
         <>
         <Navbar />
             <div className="pt-24 bg-cream1 h-screen">
-                <Sidebar />
+                {JSON.stringify(x.data, null, '\t')}
             </div>
             <Footer />
         </>
