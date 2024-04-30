@@ -1,3 +1,53 @@
+{/* 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DELETE
+THIS
+PAGE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/}
 import React, { useRef, useState } from 'react';
 
 interface Category {
@@ -78,47 +128,53 @@ export default function Categories() {
     };
     return (
         <>
-            <div className="font-mhs mx-16">
-                <table className="w-full divide-y-4 divide-brown1">
-                    <thead className="text-4xl ">
-                        <tr className="w-full">
-                            <th className="w-1/6">Name</th>
-                            <th className="w-1/2">Description</th>
-                            <th className="">Edit</th>
-                            <th className=""></th>
+            <div className="font-mhs">
+                <table className="w-full">
+                    <thead className="text-left">
+                        <tr className="w-full border-b-2">
+                            <th className="4/12 pb-2 pl-16">Name</th>
+                            <th className="w-6/12">Description</th>
+                            <th className="w-1/12">Edit</th>
+                            <th className="w-1/12"></th>
                         </tr>
                     </thead>
                     <tbody className="">
                         {Object.entries(categories).map(([category, { description, editRef, inputRef, confirmRef }], index) => (
-                            <tr className="border-b-2  border-b-brown1" key={index}>
-                                <td className="text-center text-xl">{category}</td>
-                                <td className="text-xl px-2 ">
+                            <tr className="border-b-2" key={index}>
+                                {/* Name */}
+                                <td className="py-3 pl-16">{category}</td>
+                                {/* Description */}
+                                <td className="">
                                     <h2 className="" id={category} style={{ display: "" }}>{description}</h2>
                                     <input className="text-blue-700" ref={inputRef} style={{ display: "none" }} defaultValue={description} />
                                 </td>
+                                {/* Edit */}
                                 <td className="">
-                                    <button className='btn btn-circle ' onClick={() => editCategory(category)} ref={editRef} style={{ display: "" }}>Edit</button>
+                                    <button className='btn btn-sm btn-outline ' onClick={() => editCategory(category)} ref={editRef} style={{ display: "" }}>Edit</button>
                                     <button className='btn btn-circle bg-green-200 hover:bg-green-300 hover:border-green-400 border-green-200' onClick={() => confirmEditCategory(category)} style={{ display: "none" }} ref={confirmRef}>Save</button>
                                 </td>
-                                <td className="py-2">
-                                    <button className="btn btn-error sm:btn-sm md:btn-md lg:btn-lg" onClick={() => removeCategory(category)}>
+                                {/* Delete */}
+                                <td className="">
+                                    <button className="btn btn-error btn-sm" onClick={() => removeCategory(category)}>
                                         Delete
                                     </button>
                                 </td>
                             </tr>
                         ))}
-                        <tr >
-                            <td>
+                        <tr className=''>
+                            {/* Add name */}
+                            <td className='py-3 pl-16 w-3/12 '>
                                 <label className="form-control w-full max-w-xs">
                                     <input
                                         type="text"
                                         placeholder="Category name"
-                                        className="input input-bordered w-full max-w-xs"
+                                        className="input input-bordered w-full max-w-xs "
                                         value={inputValue}
                                         onChange={(e) => setInputValue(e.target.value)}
                                     />
                                 </label>
                             </td>
+                            {/* Add description */}
                             <td>
                                 <label className="form-control">
                                     <textarea
