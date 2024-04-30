@@ -89,4 +89,17 @@ export const mongoRouter = createTRPCRouter({
     //   })),
     // });
   }),
+
+  setVariantRestockDate: publicProcedure
+    .input(z.object({ lvId: z.string(), restockDate: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.variant.update({
+        where: {
+          loyverseVariantID: input.lvId
+        },
+        data: {
+           restockDate: input.restockDate
+        }
+      })
+    })
 });
