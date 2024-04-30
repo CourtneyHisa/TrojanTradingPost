@@ -15,11 +15,12 @@ interface Item {
 }
 
 export default function Products() {
-    const categories = ["Red", "Green", "Blue", "Long ass example category just to visualize asdfghjkl;f afsdvba bfawbvbasvjhZSDjb"];
+    const categories = ["Red", "Green", "Blue", "Spacing test a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a"];
     const [items, setItems] = useState<Item[]>([
         { id: 1, name: 'Red', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], restock_date: new Date(), ref: useRef<HTMLDialogElement>(null) },
         { id: 2, name: 'Green', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], restock_date: new Date(), ref: useRef<HTMLDialogElement>(null) },
         { id: 3, name: 'Blue', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], restock_date: new Date(), ref: useRef<HTMLDialogElement>(null) },
+        { id: 3, name: 'Spacing test a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], restock_date: new Date(), ref: useRef<HTMLDialogElement>(null) },
     ]);
     const [showImage, setShowImage] = useState(false);
 
@@ -65,12 +66,20 @@ export default function Products() {
                 <table className="w-full">
                     <thead className="text-left">
                         <tr className="border-b-2">
-                            <th className='w-1/12 pb-2 pl-16'>#</th>
-                            <th className='w-2/12'>Name</th>
-                            <th className='w-1/12'>Price</th>
-                            <th className='w-1/12'>In-Stock</th>
-                            <th className='w-1/12'>Image</th>
-                            <th className='w-3/12'>Categories</th>
+                            {/* <th className='w-1/12 pb-2 pl-16'>#</th> */}
+                            <th className='w-3/12 pb-2 pl-16 pr-4'>Name</th>
+                            <th className='w-1/12 pb-2'>Price</th>
+                            <th className='w-1/12 pb-2'>In-Stock</th>
+                            <th className='w-1/12 pb-2'>Image</th>
+                            <th className='w-3/12 pb-2 pr-4'>
+                                Categories
+                                <button className='ml-4 text-blue-500 btn btn-sm btn-outline ' >
+                                    Add / Remove 
+                                </button>
+                            </th>
+                            <th className="w-1/12">
+                                Select Categories
+                            </th>
                             <th className='w-1/12 pr-16'>Restock</th>
                         </tr>
                     </thead>
@@ -78,28 +87,31 @@ export default function Products() {
                         {items.map((item, index) => (
                             <tr key={item.id} className="border-b-2">
                                 {/* ID */}
-                                <td className="w-1/12 py-3 pl-16">{index + 1}</td>
+                                {/* <td className="w-1/12 py-3 pl-16">{index + 1}</td> */}
                                 {/* Name */}
-                                <td className="w-2/12">
+                                <td className="w-2/12 py-3 pl-16 pr-4">
                                     {item.name}
                                 </td>
                                 {/* Price  */}
-                                <td className="w-1/12">
+                                <td className="w-1/12 py-3">
                                     $ {item.price}
                                 </td>
                                 {/* Stock */}
-                                <td className="w-1/12">{item.in_stock}</td>
+                                <td className="w-1/12 py-3">{item.in_stock}</td>
                                 {/* Image */}
-                                <td className="w-1/12">
+                                <td className="w-1/12 py-3">
                                     <button
                                         className="btn-sm btn-outline btn"
                                         onClick={handleButtonClick}>
                                         Show Image</button>
                                 </td>
                                 {/* Categories */}
-                                <td className="w-3/12">
+                                <td className="w-3/12 py-3 pr-4">
                                     {item.category.length > 0 ? item.category.join(" / ") : (<label>No Categories</label>)}
-                                    <button className="px-2 text-blue-500 -mr-28" onClick={() => item.ref.current?.showModal()} >Edit</button>
+                                </td>
+                                {/* Edit button */}
+                                <td className='w-1/12 py-3'>
+                                    <button className="px-2 btn btn-sm btn-outline text-blue-500 " onClick={() => item.ref.current?.showModal()} >Select</button>
                                     <dialog className="modal " ref={item.ref}>
                                         <div className="modal-box">
                                             <h3 className="font-bold text-lg">Choose Categories</h3>
@@ -118,7 +130,7 @@ export default function Products() {
                                     </dialog>
                                 </td>
                                 {/* Restock */}
-                                <td className="w-1/12 text-blue-500 pr-16">
+                                <td className="w-1/12 text-blue-500 py-3 pr-16">
                                     <DatePicker
                                         showIcon
                                         toggleCalendarOnIconClick
