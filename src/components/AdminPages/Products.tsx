@@ -32,7 +32,6 @@ export default function Products() {
         { id: 3, name: 'Blue', price: 999.99, in_stock: 99, image: null, category: [], selectedCategories: [], restock_date: new Date(), ref: useRef<HTMLDialogElement>(null) },
     ]);
     const [inputValue, setInputValue] = useState('');
-    const [textareaValue, setTextareaValue] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
     const editRef = useRef<HTMLButtonElement>(null)
     const confirmRef = useRef<HTMLButtonElement>(null)
@@ -44,11 +43,10 @@ export default function Products() {
                 const newCategory = inputValue.trim();
                 return {
                     ...prevState,
-                    [newCategory]: { description: textareaValue.trim(), inputRef: inputRef, editRef: editRef, confirmRef: confirmRef }
+                    [newCategory]: { inputRef: inputRef, editRef: editRef, confirmRef: confirmRef }
                 };
             });
             setInputValue('');
-            setTextareaValue('');
         }
     };
     // removing a category
@@ -115,7 +113,8 @@ export default function Products() {
         if (editInputValue && editInputValue.trim() !== '') {
             setCategories(prevState => {
                 const newCategories = { ...prevState };
-                // newCategories[category] = editInputValue.trim();
+                delete newCategories[category]
+                Object.assign(newCategories, { [editInputValue]: { inputRef: inputRef, editRef: editRef, confirmRef: confirmRef } })
                 return newCategories;
             });
         } else {
@@ -141,29 +140,43 @@ export default function Products() {
                                         <th></th>
                                     </tr>
                                 </thead>
-                                <thead>
+                                <tbody>
                                     {Object.entries(categories).map(([category, { editRef, inputRef, confirmRef }], index) => (
-                                        <tr className="border-b-2  border-b-brown1" key={index}>
-                                            <td className="text-center text-xl">
+                                        <tr className="" key={index}>
+                                            <td className="">
                                                 <h2 className="" id={category} style={{ display: "" }}>{category}</h2>
-                                                <input className="text-blue-700" ref={inputRef} style={{ display: "none" }} defaultValue={category} />
+                                                <input className="" ref={inputRef} style={{ display: "none" }} defaultValue={category} />
                                             </td>
                                             <td className="">
-                                                <button className='btn btn-circle ' onClick={() => handleEditCategory(category)} ref={editRef} style={{ display: "" }}>Edit</button>
-                                                <button className='btn btn-circle bg-green-200 hover:bg-green-300 hover:border-green-400 border-green-200' onClick={() => handleCategoryEdit(category)} style={{ display: "none" }} ref={confirmRef}>Save</button>
+                                                <button className='btn' onClick={() => handleEditCategory(category)} ref={editRef} style={{ display: "" }}>Edit</button>
+                                                <button className='btn' onClick={() => handleCategoryEdit(category)} style={{ display: "none" }} ref={confirmRef}>Save</button>
                                             </td>
-                                            <td className="py-2">
-                                                <button className="btn btn-error sm:btn-sm md:btn-md lg:btn-lg" onClick={() => removeCategory(category)}>
-                                                    Delete
-                                                </button>
+                                            <td className="">
+                                                <button className="btn" onClick={() => removeCategory(category)}>Delete</button>
                                             </td>
                                         </tr>
                                     ))}
-                                </thead>
+                                    <tr >
+                                        <td>
+                                            <label className="form-control w-full max-w-xs">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Category name"
+                                                    className="input input-bordered w-full max-w-xs"
+                                                    value={inputValue}
+                                                    onChange={(e) => setInputValue(e.target.value)}
+                                                />
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <button className="btn" onClick={addCategory}>Add Category</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                         <div className="modal-action">
-                            <button className="btn">Save</button>
+                            <button className="btn" onClick={() => editCategory.current?.close()}>Save</button>
                         </div>
                     </div>
                 </dialog>
