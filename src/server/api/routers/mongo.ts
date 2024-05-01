@@ -2,8 +2,8 @@ import { late, z } from "zod";
 import axios from "axios";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { API_BASE, AUTH, type LVItem, type LVInventory, type LVVariant, type VaritStock, type LVCategory, LVVariantsWrapper } from "~/utils/loyverse";
-import { Prisma, type Reservation, type Variant } from "@prisma/client";
+import { API_BASE, AUTH, type LVItem, type LVInventory, type LVVariant, type VaritStock, type LVCategory, type LVVariantsWrapper } from "~/utils/loyverse";
+import type { Prisma, Reservation, Variant } from "@prisma/client";
 
 export const mongoRouter = createTRPCRouter({
   getItemByLoyverseVariantId: publicProcedure
@@ -79,15 +79,16 @@ export const mongoRouter = createTRPCRouter({
         },
       });
 
-    const l = await ctx.db.variant.count();
-    console.log(retrievedVariants.variants.map(v => v.item_id + '\t' + v.variant_id + '\t').join('\n'));
-    // await ctx.db.item.createMany({
-    //   data: retrievedVariants.variants.map((variant) => ({
-    //     restockDate: null,
-    //     loyverseItemID: variant.item_id,
-    //     loyverseVariantID: variant.variant_id,
-    //   })),
-    // });
+    await ctx.db.variant.createMany({
+      data: retrievedVariants.variants.map(variant => (
+        {
+          loyverseItemID: variant.item_id,
+          loyverseVariantID: variant.variant_id
+        }
+      ))
+    });
+
+    return ":)"
   }),
 
   setVariantRestockDate: publicProcedure
