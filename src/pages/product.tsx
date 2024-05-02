@@ -1,21 +1,25 @@
 import ItemCard from "~/components/ItemCard"
-import { useCallback, useState } from "react";
 import { api } from "~/utils/api";
+import Navbar from "~/components/Navbar"
+import Sidebar from "~/components/Sidebar"
 
 export default function product() {
 
-    const [layout, setLayout] = useState(0);
-    const nextLayout = useCallback(() => setLayout(state => state+1), [setLayout])
-    const itemLayout = "column-" + layout.toString()
     const items = api.loyverse.getCleanVariants.useQuery();
 
     return (
         <>
-            <button onClick={nextLayout}>Change Layout {layout}</button>
-            <div className={itemLayout}>
-                {itemLayout}
+         <div className="pb-24"><Navbar /></div>
+            
+            {/* disclaimer: put on all pages??? */}
+            <div className="ml-60 p-4 mb-4 text-sm text-blue-800 bg-blue-50 dark:bg-gray-800 dark:text-blue-400 font-mhs" role="alert">
+                <span className="font-medium">Disclaimer: </span>This site is for reservations purposes only. Transactions are done in store.
+            </div>
+            <div className="ml-64">
                 {!(items.isFetched && items.data) ? <div>Loading</div> : <ItemCard variants={items.data}/>}
             </div>
+            <div className="p-24"><Sidebar/></div>
+            
         </>
     )
 }
