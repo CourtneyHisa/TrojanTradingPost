@@ -5,6 +5,7 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { API_BASE, AUTH, type LVItemsWrapper, type LVItem, type LVInventory, LVVariant, VariantLinkedItem, VaritStock, LVCategoriesWrapper } from "~/utils/loyverse";
 import { TRPCError } from "@trpc/server";
 
+// we are no longer using loyverse :(
 // interface with loyverse
 export const lvRouter = createTRPCRouter({
   getAll: publicProcedure

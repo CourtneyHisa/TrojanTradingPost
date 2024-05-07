@@ -7,6 +7,7 @@ export default function product() {
 
     const items = api.loyverse.getCleanVariants.useQuery();
 
+    // lists all products
     return (
         <>
          <div className="pb-24"><Navbar /></div>

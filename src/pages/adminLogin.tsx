@@ -1,5 +1,6 @@
 import Navbar from "~/components/Navbar";
 export default function adminLogin() {
+    // no functionality w/ backend
     return (
         <>
             <Navbar />

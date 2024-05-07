@@ -1,5 +1,7 @@
 import PictureRotation from "~/components/pictureRotation"
 export default function editLandingPage() {
+    // incomplete
+    // editing not implemented
     return (
         <>
             <div className="text-2xl md:px-16 xl:px-24 xl:text-3xl bg-gray-100">

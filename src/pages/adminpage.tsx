@@ -29,6 +29,7 @@ export default function AdminPage() {
         const main = mainRef.current;
         if (main && selectedMenuItem) {
             const root = createRoot(main)
+            // use a switch
             root.render(
                 selectedMenuItem === 'home' ? <Home /> :
                     selectedMenuItem === 'products' ? <Products /> :
